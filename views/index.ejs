@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Index Page</title>
+    <style>
+        .tab {
+            display: none;
+        }
+
+        .tab.active {
+            display: block;
+        }
+
+        .tab-buttons button {
+            margin-right: 10px;
+        }
+
+        .search-bar {
+            margin-bottom: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .modal-text {
+            flex: 1;
+        }
+
+       
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function showTab(tabId) {
+            var tabs = document.querySelectorAll('.tab');
+            tabs.forEach(function (tab) {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function searchPogs() {
+            var idInput = document.getElementById("searchIdInput").value;
+            var nameInput = document.getElementById("searchNameInput").value;
+            var serialInput = document.getElementById("searchSerialInput").value;
+            var tagsInput = document.getElementById("searchTagsInput").value;
+
+            fetch('/searchPogs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: idInput,
+                    name: nameInput,
+                    serial: serialInput,
+                    tags: tagsInput
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var table = document.getElementById("allPogsTable").getElementsByTagName('tbody')[0];
+                    table.innerHTML = '';
+                    data.forEach(function (pog) {
+                        var row = table.insertRow();
+                        row.insertCell(0).innerText = pog.uid;
+                        row.insertCell(1).innerText = pog.serial;
+                        row.insertCell(2).innerText = pog.name;
+                        row.insertCell(3).innerText = pog.color;
+                        row.insertCell(4).innerText = pog.tags;
+                        row.addEventListener('click', function () {
+                            showPogDetails(pog.uid);
+                        });
+                    });
+                });
+        }
+
+        function sortTable(n, isNumeric = false, dir = "asc") {
+            var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+            table = document.getElementById("allPogsTable");
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    if (dir == "asc") {
+                        if (isNumeric) {
+                            if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        } else {
+                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        }
+                    } else if (dir == "desc") {
+                        if (isNumeric) {
+                            if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        } else {
+                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                shouldSwitch = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+        function handleSort() {
+            var sortOption = document.getElementById("sortOptions").value;
+            switch (sortOption) {
+                case "idAsc":
+                    sortTable(0, true, "asc");
+                    break;
+                case "idDesc":
+                    sortTable(0, true, "desc");
+                    break;
+                case "nameAsc":
+                    sortTable(2, false, "asc");
+                    break;
+                case "nameDesc":
+                    sortTable(2, false, "desc");
+                    break;
+                case "serial":
+                    sortTable(1);
+                    break;
+                case "color":
+                    sortTable(3);
+                    break;
+                case "tags":
+                    sortTable(4);
+                    break;
+            }
+        }
+
+
+        function showPogDetails(uid) {
+            fetch(`/api/pogs/${uid}`)
+                .then(response => response.json())
+                .then(data => {
+                    var modal = document.getElementById("pogDetailsModal");
+                    var modalContent = document.getElementById("pogDetailsContent");
+                    var imageUrl = `/pogs/${data.name}${uid}.png`; // Construct the image URL directly using the UID
+                    console.log('Image URL:', imageUrl); // Log the image URL for debugging
+                    modalContent.innerHTML = `
+            <div class="modal-text">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Pog Details</h2>
+                <p><strong>ID:</strong> ${data.uid}</p>
+                <p><strong>Serial:</strong> ${data.serial}</p>
+                <p><strong>Name:</strong> ${data.name}</p>
+                <p><strong>Color:</strong> ${data.color}</p>
+                <p><strong>Tags:</strong> ${data.tags}</p>
+                <p><strong>Lore:</strong> ${data.lore}</p>
+                <p><strong>Rank:</strong> ${data.rank}</p>
+                <p><strong>Creator:</strong> ${data.creator}</p>
+            </div>
+         <div class="modal-image">
+       
+        </div>
+        `;
+                    modal.style.display = "block";
+                });
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("pogDetailsModal");
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            var modal = document.getElementById("pogDetailsModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="allPogsTab" class="tab active">
+        <h2>All Pogs</h2>
+        <div class="search-bar">
+            <input type="text" id="searchIdInput" placeholder="Search by ID">
+            <input type="text" id="searchNameInput" placeholder="Search by Name">
+            <input type="text" id="searchSerialInput" placeholder="Search by Serial">
+            <input type="text" id="searchTagsInput" placeholder="Search by Tags">
+            <button onclick="searchPogs()">Search</button>
+            <select id="sortOptions" onchange="handleSort()">
+                <option value="idAsc">Sort by ID (Less to Greatest)</option>
+                <option value="idDesc">Sort by ID (Greatest to Less)</option>
+                <option value="nameAsc">Sort by Name (A to Z)</option>
+                <option value="nameDesc">Sort by Name (Z to A)</option>
+                <option value="serial">Sort by Serial</option>
+                <option value="color">Sort by Color</option>
+                <option value="tags">Sort by Tags</option>
+            </select>
+        </div>
+        <table id="allPogsTable" border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Serial</th>
+                    <th>Name</th>
+                    <th>Color</th>
+                    <th>Tags</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pogs.forEach(function(pog) { %>
+                    <tr onclick="showPogDetails(<%= pog.uid %>)">
+                        <td>
+                            <%= pog.uid %>
+                        </td>
+                        <td>
+                            <%= pog.serial %>
+                        </td>
+                        <td>
+                            <%= pog.name %>
+                        </td>
+                        <td>
+                            <%= pog.color %>
+                        </td>
+                        <td>
+                            <%= pog.tags %>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for displaying pog details -->
+    <div id="pogDetailsModal" class="modal">
+        <div class="modal-content" id="pogDetailsContent">
+            <!-- Details will be populated here -->
+        </div>
+    </div>
+</body>
+
+</html>
