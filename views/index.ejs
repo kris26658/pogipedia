@@ -4,6 +4,28 @@
 <head>
     <title>Index Page</title>
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-size: 18px; /* Increase the base font size */
+        }
+
+        h2 {
+            font-size: 2.5em; /* Increase the font size of the title */
+            color: #333; /* Set the color of the title */
+            text-align: center; /* Center the title */
+            margin-bottom: 20px; /* Add some space below the title */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle text shadow */
+            border: 2px solid #333; /* Add a border to the title */
+            background-color: #f0f0f0; /* Set a different background color for the title */
+            padding: 10px; /* Add some padding inside the border */
+            border-radius: 10px; /* Add rounded corners to the border */
+        }
+
         .tab {
             display: none;
         }
@@ -14,10 +36,18 @@
 
         .tab-buttons button {
             margin-right: 10px;
+            font-size: 1.2em; /* Increase the font size of buttons */
         }
 
         .search-bar {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-bar input,
+        .search-bar button,
+        .search-bar select {
+            font-size: 1.2em; /* Increase the font size of search inputs and buttons */
         }
 
         .modal {
@@ -29,40 +59,139 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0, 0, 0);
             background-color: rgba(0, 0, 0, 0.4);
-            padding-top: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 80%;
+            max-width: 800px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            font-size: 1.2em; /* Increase the font size of modal content */
         }
 
         .modal-text {
             flex: 1;
+            width: 100%;
         }
-
-       
 
         .close {
             color: #aaa;
-            float: right;
-            font-size: 28px;
+            align-self: flex-end;
+            font-size: 2em; /* Increase the font size of the close button */
             font-weight: bold;
+            cursor: pointer;
         }
 
         .close:hover,
         .close:focus {
             color: black;
             text-decoration: none;
-            cursor: pointer;
         }
+
+        table {
+            font-size: 1.2em; /* Increase the font size of table content */
+        }
+
+        .color-guide {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(240, 240, 240, 0.6); /* Set a slightly transparent background color */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            transition: max-height 0.3s ease;
+        }
+
+        .color-guide h3 {
+            margin-top: 0;
+        }
+
+        .color-guide .color-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .color-guide .color-box {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        @media (max-width: 600px) {
+        body {
+            font-size: 29px; /* Increase the base font size for small screens */
+        }
+
+        h2 {
+            font-size: 3.5em; /* Increase the font size of the title for small screens */
+        }
+
+        .search-bar input,
+        .search-bar button,
+        .search-bar select {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 1.8em; /* Increase the font size of search inputs and buttons for small screens */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            display: none;
+        }
+
+        tbody,
+        tr,
+        td {
+            display: block;
+            width: 100%;
+        }
+
+        tr {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        td {
+            text-align: right;
+            padding-left: 50%;
+            position: relative;
+        }
+
+        td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 10px;
+            width: calc(50% - 20px);
+            white-space: nowrap;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .color-guide {
+            font-size: 1.8em; /* Increase the font size of the color guide for small screens */
+        }
+
+        .modal-content {
+            font-size: 1.8em; /* Increase the font size of modal content for small screens */
+        }
+    }
     </style>
     <script>
         function showTab(tabId) {
@@ -186,7 +315,6 @@
             }
         }
 
-
         function showPogDetails(uid) {
             fetch(`/api/pogs/${uid}`)
                 .then(response => response.json())
@@ -212,13 +340,18 @@
        
         </div>
         `;
-                    modal.style.display = "block";
+                    modal.style.display = "flex";
                 });
         }
 
         function closeModal() {
             var modal = document.getElementById("pogDetailsModal");
             modal.style.display = "none";
+        }
+
+        window.onload = function () {
+            var modal = document.getElementById("pogDetailsModal");
+            modal.style.display = "none"; // Ensure the modal is hidden when the page loads
         }
 
         window.onclick = function (event) {
@@ -232,7 +365,9 @@
 
 <body>
     <div id="allPogsTab" class="tab active">
-        <h2>All Pogs</h2>
+        <div id="title">
+            <h2>Pogipedia</h2>
+        </div>
         <div class="search-bar">
             <input type="text" id="searchIdInput" placeholder="Search by ID">
             <input type="text" id="searchNameInput" placeholder="Search by Name">
@@ -249,7 +384,7 @@
                 <option value="tags">Sort by Tags</option>
             </select>
         </div>
-        <table id="allPogsTable" border="1">
+        <table id="allPogsTable" border="1" style="margin: 0 auto;">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -261,28 +396,46 @@
             </thead>
             <tbody>
                 <% pogs.forEach(function(pog) { %>
-                    <tr onclick="showPogDetails(<%= pog.uid %>)">
-                        <td>
-                            <%= pog.uid %>
-                        </td>
-                        <td>
-                            <%= pog.serial %>
-                        </td>
-                        <td>
-                            <%= pog.name %>
-                        </td>
-                        <td>
-                            <%= pog.color %>
-                        </td>
-                        <td>
-                            <%= pog.tags %>
-                        </td>
+                    <tr class="list-color-change" style="background-color: <%= getBackgroundColor(pog.rank) %>;" onclick="showPogDetails(<%= pog.uid %>)">
+                        <td><%= pog.uid %></td>
+                        <td><%= pog.serial %></td>
+                        <td><%= pog.name %></td>
+                        <td><%= pog.color %></td>
+                        <td><%= pog.tags %></td>
                     </tr>
-                    <% }); %>
+                <% }); %>
             </tbody>
         </table>
     </div>
 
+   <!-- Color Guide -->
+<div class="color-guide">
+    <h3>Color Guide</h3>
+    <div class="color-item">
+        <div class="color-box" style="background-color: #fcdcdc;"></div>
+        <span>Trash</span>
+    </div>
+    <div class="color-item">
+        <div class="color-box" style="background-color: #ffedc1;"></div>
+        <span>Common</span>
+    </div>
+    <div class="color-item">
+        <div class="color-box" style="background-color: #EBF8DC;"></div>
+        <span>Uncommon</span>
+    </div>
+    <div class="color-item">
+        <div class="color-box" style="background-color: #DCF2F8;"></div>
+        <span>Rare</span>
+    </div>
+    <div class="color-item">
+        <div class="color-box" style="background-color: #E7D5F3;"></div>
+        <span>Mythic</span>
+    </div>
+    <div class="color-item">
+        <div class="color-box" style="background-color: #FFFFFF;"></div>
+        <span>unknown</span>
+    </div>
+</div>
     <!-- Modal for displaying pog details -->
     <div id="pogDetailsModal" class="modal">
         <div class="modal-content" id="pogDetailsContent">
@@ -290,5 +443,7 @@
         </div>
     </div>
 </body>
-
+<footer>
+    <p>i think it just need a footer to look nice i just dont know what to put here</p>
+</footer>
 </html>

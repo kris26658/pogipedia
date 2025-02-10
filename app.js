@@ -1,7 +1,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-const bodyParser = require('body-parser'); // Add this line
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
@@ -10,8 +10,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Middleware to parse JSON bodies
-app.use(bodyParser.json()); // Add this line
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
 // Connect to SQLite database
 const dbPath = path.resolve(__dirname, 'db', 'pog.db');
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -22,6 +23,19 @@ const db = new sqlite3.Database(dbPath, (err) => {
     initializeDatabase();
   }
 });
+
+const ranks = {
+  'Uncommon': '#EBF8DC',
+  'Trash': '#fcdcdc',
+  'Common': '#ffedc1',
+  'Rare': '#DCF2F8',
+  'Mythic': '#E7D5F3',
+  'Default': '#FFFFFF'
+};
+
+function getBackgroundColor(rank) {
+  return ranks[rank] || ranks['Default'];
+}
 
 // Function to initialize the database
 function initializeDatabase() {
@@ -61,25 +75,10 @@ app.get('/', (req, res) => {
       return res.status(500).send(err.message);
     }
 
-    // Fetch pogs in a specific tag (example: Tag A)
-    db.all('SELECT * FROM pogs WHERE tags = ?', ['Tag A'], (err, tagPogs) => {
-      if (err) {
-        return res.status(500).send(err.message);
-      }
-
-      // Fetch a single pog (example: pog with uid 1)
-      db.get('SELECT * FROM pogs WHERE uid = ?', [1], (err, singlePog) => {
-        if (err) {
-          return res.status(500).send(err.message);
-        }
-
-        res.render('index', {
-          pogs: pogs,
-          tagName: 'Tag A',
-          tagPogs: tagPogs,
-          singlePog: singlePog
-        });
-      });
+    res.render('index', {
+      pogs: pogs,
+      getBackgroundColor: getBackgroundColor, // Pass the function to the template
+      ranks: ranks // Pass the ranks object to the template
     });
   });
 });
