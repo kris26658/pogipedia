@@ -1,0 +1,189 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-size: 18px; /* Increase the base font size */
+}
+
+h2 {
+    font-size: 2.5em; /* Increase the font size of the title */
+    color: #333; /* Set the color of the title */
+    text-align: center; /* Center the title */
+    margin-bottom: 20px; /* Add some space below the title */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle text shadow */
+    border: 2px solid #d3d3d3; /* Add a border to the title */
+    background-color: #f0f0f0; /* Set a different background color for the title */
+    padding: 10px; /* Add some padding inside the border */
+    border-radius: 10px; /* Add rounded corners to the border */
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+.tab-buttons button {
+    margin-right: 10px;
+    font-size: 1.2em; /* Increase the font size of buttons */
+}
+
+.search-bar {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-bar input,
+.search-bar button,
+.search-bar select {
+    font-size: 1.2em; /* Increase the font size of search inputs and buttons */
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.2em; /* Increase the font size of modal content */
+}
+
+.modal-text {
+    flex: 1;
+    width: 100%;
+}
+
+.close {
+    color: #aaa;
+    align-self: flex-end;
+    font-size: 2em; /* Increase the font size of the close button */
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+table {
+    font-size: 1.2em; /* Increase the font size of table content */
+}
+
+.color-guide {
+    position: fixed;
+    top: 200px;
+    right: 20px;
+    background-color: rgba(240, 240, 240, 0.8); /* Set a slightly transparent background color */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: 300px;
+    overflow-y: auto;
+    transition: max-height 0.3s ease;
+    
+}
+
+.color-guide h3 {
+    margin-top: 0;
+}
+
+.color-guide .color-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.color-guide .color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+@media (max-width: 600px) {
+body {
+    font-size: 29px; /* Increase the base font size for small screens */
+}
+
+h2 {
+    font-size: 3.5em; /* Increase the font size of the title for small screens */
+}
+
+.search-bar input,
+.search-bar button,
+.search-bar select {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 1.8em; /* Increase the font size of search inputs and buttons for small screens */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    display: none;
+}
+
+tbody,
+tr,
+td {
+    display: block;
+    width: 100%;
+}
+
+tr {
+    margin-bottom: 10px;
+    border: 1px solid #dddddd;
+    padding: 10px;
+}
+
+td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+}
+
+td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: calc(50% - 20px);
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+}
+
+.color-guide {
+    font-size: 1.8em; /* Increase the font size of the color guide for small screens */
+}
+
+.modal-content {
+    font-size: 1.8em; /* Increase the font size of modal content for small screens */
+}
+}

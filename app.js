@@ -110,6 +110,9 @@ app.post('/searchPogs', (req, res) => {
     if (err) {
       return res.status(500).send(err.message);
     }
+    rows.forEach(row => {
+      row.backgroundColor = getBackgroundColor(row.rank); // Add background color based on rank
+    });
     res.json(rows);
   });
 });
