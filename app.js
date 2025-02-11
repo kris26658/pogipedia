@@ -1,8 +1,17 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
+
+// Set the view engine to EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Middleware to parse JSON bodies
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Connect to SQLite database
 const dbPath = path.resolve(__dirname, 'db', 'pog.db');
@@ -15,6 +24,19 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
+const ranks = {
+  'Uncommon': '#EBF8DC',
+  'Trash': '#fcdcdc',
+  'Common': '#ffedc1',
+  'Rare': '#DCF2F8',
+  'Mythic': '#E7D5F3',
+  'Default': '#FFFFFF'
+};
+
+function getBackgroundColor(rank) {
+  return ranks[rank] || ranks['Default'];
+}
+
 // Function to initialize the database
 function initializeDatabase() {
   db.serialize(() => {
@@ -22,8 +44,15 @@ function initializeDatabase() {
     db.run(`
       CREATE TABLE IF NOT EXISTS pogs (
         uid INTEGER PRIMARY KEY,
+        serial TEXT,
         name TEXT NOT NULL,
-        tags TEXT NOT NULL
+        color TEXT,
+        tags TEXT NOT NULL,
+        lore TEXT,
+        rank TEXT,
+        creator TEXT,
+        description TEXT,
+        imageUrl TEXT
       )
     `);
 
@@ -35,40 +64,68 @@ function initializeDatabase() {
         FOREIGN KEY (pog_id) REFERENCES pogs (uid)
       )
     `);
-
-    })
-     
+  });
 }
 
+// Route to render the index page
+app.get('/', (req, res) => {
+  // Fetch all pogs
+  db.all('SELECT * FROM pogs', (err, pogs) => {
+    if (err) {
+      return res.status(500).send(err.message);
+    }
+
+    res.render('index', {
+      pogs: pogs,
+      getBackgroundColor: getBackgroundColor, // Pass the function to the template
+      ranks: ranks // Pass the ranks object to the template
+    });
+  });
+});
+
+// Route to handle search request
+app.post('/searchPogs', (req, res) => {
+  const { id, name, serial, tags } = req.body;
+  let query = 'SELECT * FROM pogs WHERE 1=1';
+  let params = [];
+
+  if (id) {
+    query += ' AND uid = ?';
+    params.push(id);
+  }
+  if (name) {
+    query += ' AND name LIKE ?';
+    params.push(`%${name}%`);
+  }
+  if (serial) {
+    query += ' AND serial LIKE ?';
+    params.push(`%${serial}%`);
+  }
+  if (tags) {
+    query += ' AND tags LIKE ?';
+    params.push(`%${tags}%`);
+  }
+
+  db.all(query, params, (err, rows) => {
+    if (err) {
+      return res.status(500).send(err.message);
+    }
+    res.json(rows);
+  });
+});
+
 // Route to get all pogs with their tags using uid for uid tags
-// the rought /api/pogs displayes all pogs with their uid , name , color and tag in oeder of entered in the database
 app.get('/api/pogs', (req, res) => {
   const sql = 'SELECT uid, serial, name, color, tags FROM pogs';
   db.all(sql, [], (err, rows) => {
     if (err) {
-      res.status(400).json({ error: err.message });
-      return;
+      return res.status(500).send(err.message);
     }
-    res.json(
-      rows.map(row => ({
-        uid: row.uid,
-        serial: row.serial,
-        name: row.name,
-        color: row.color,
-        tags: row.tags,
-      }))
-    );
+    res.json(rows);
   });
 });
 
-
-
-
-
 // Route to get all data about an individual pog, including variations
-// the route /api/pogs/:uid displays all data about an pug based in its uid
-// for example if one is to enter /api/pogs/1 it will display all data about the pog with uid 1 inculding it varitions if any 
-
 app.get('/api/pogs/:identifier', (req, res) => {
   const identifier = req.params.identifier;
   let sql;
@@ -84,66 +141,39 @@ app.get('/api/pogs/:identifier', (req, res) => {
   } else if (/^\d{4}[A-Z]{1}\d{2}$/.test(identifier)) { // Adjust the regex pattern to match your serial number format
     sql = 'SELECT uid, serial, name, color, tags FROM pogs WHERE serial = ?';
     params = [identifier];
-    console.log('Identifier matches serial number pattern');
+    console.log('Identifier matches serial number pattern, treating as serial');
   } else {
-    sql = 'SELECT uid, serial, name, color, tags FROM pogs WHERE name = ?';
-    params = [identifier];
-    console.log('Identifier is treated as name');
+    return res.status(400).send('Invalid identifier format');
   }
 
-  db.all(sql, params, (err, rows) => {
+  db.get(sql, params, (err, row) => {
     if (err) {
-      res.status(400).json({ error: err.message });
-      return;
+      return res.status(500).send(err.message);
     }
-    res.json(rows.map(row => ({
-      uid: row.uid,
-      serial: row.serial,
-      name: row.name,
-      color: row.color,
-      tags: row.tags,
-      lore: row.lore,
-      rank: row.rank,
-      creator: row.creator,
-    })));
+    res.json(row);
   });
 });
-// Route to get all collections (tags)
-// the route /api/collections displays all collections in the database
-// it only displays the tags catgory of the pogs and only 1 of each name
 
+// Route to get all collections (tags)
 app.get('/api/collections', (req, res) => {
   const sql = 'SELECT DISTINCT tags FROM pogs';
   db.all(sql, [], (err, rows) => {
     if (err) {
-      res.status(400).json({ error: err.message });
-      return;
+      return res.status(500).send(err.message);
     }
-    res.json({
-     
-      data: rows.map(row => row.tags)
-    });
+    res.json(rows);
   });
 });
 
 // Route to get all pogs in a specific collection (tag)
-// the route /api/collections/:name displays all pogs in a specific collection based on the tag name
-// for example if you enter /api/collections/Class Pog it will display all pogs with the tag Class Pog
-// it will display the pogs uid , name , and color in order of entered in the database
 app.get('/api/collections/:name', (req, res) => {
-  const collectionName = req.params.name;
-  const sql = 'SELECT uid, serial, name, color FROM pogs WHERE tags = ?'; 
-  db.all(sql, [collectionName], (err, rows) => {
+  const name = req.params.name;
+  const sql = 'SELECT uid, name, color FROM pogs WHERE tags = ?';
+  db.all(sql, [name], (err, rows) => {
     if (err) {
-      res.status(400).json({ error: err.message });
-      return;
+      return res.status(500).send(err.message);
     }
-    res.json(rows.map(row => ({
-      uid: row.uid,
-      serial: row.serial,
-      name: row.name,
-      color: row.color, 
-    })));
+    res.json(rows);
   });
 });
 
