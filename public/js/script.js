@@ -118,33 +118,37 @@ function handleSort() {
             break;
     }
 }
-
 function showPogDetails(uid) {
     fetch(`/api/pogs/${uid}`)
         .then(response => response.json())
         .then(data => {
+            console.log('Fetched data:', data); // Log the entire data object for debugging
             var modal = document.getElementById("pogDetailsModal");
             var modalContent = document.getElementById("pogDetailsContent");
-            var imageUrl = `/pogs/${data.name}${uid}.png`; // Construct the image URL directly using the UID
+            var imageUrl = `/pogs/${data.url}.JPG`; // Construct the image URL using the url from the database
+            var imageUrl2 = `/pogs/${data.url}.png`; // Construct the second image URL using the url from the database
             console.log('Image URL:', imageUrl); // Log the image URL for debugging
             modalContent.innerHTML = `
-    <div class="modal-text">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Pog Details</h2>
-        <p><strong>ID:</strong> ${data.uid}</p>
-        <p><strong>Serial:</strong> ${data.serial}</p>
-        <p><strong>Name:</strong> ${data.name}</p>
-        <p><strong>Color:</strong> ${data.color}</p>
-        <p><strong>Tags:</strong> ${data.tags}</p>
-        <p><strong>Lore:</strong> ${data.lore}</p>
-        <p><strong>Rank:</strong> ${data.rank}</p>
-        <p><strong>Creator:</strong> ${data.creator}</p>
-    </div>
- <div class="modal-image">
-
-</div>
-`;
+                <div class="modal-text">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h2>Pog Details</h2>
+                    <p><strong>ID:</strong> ${data.uid}</p>
+                    <p><strong>Serial:</strong> ${data.serial}</p>
+                    <p><strong>Name:</strong> ${data.name}</p>
+                    <p><strong>Color:</strong> ${data.color}</p>
+                    <p><strong>Tags:</strong> ${data.tags}</p>
+                    <p><strong>Lore:</strong> ${data.lore}</p>
+                    <p><strong>Rank:</strong> ${data.rank}</p>
+                    <p><strong>Creator:</strong> ${data.creator}</p>
+                </div>
+                <div class="modal-image">
+                    <img id="pogImage" class="resized-image" src="${imageUrl}" alt="${data.name}" onerror="this.onerror=null;this.src='${imageUrl2}';" />
+                </div>
+            `;
             modal.style.display = "flex";
+        })
+        .catch(error => {
+            console.error('Error fetching pog details:', error);
         });
 }
 

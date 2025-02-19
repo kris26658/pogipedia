@@ -127,7 +127,17 @@ app.get('/api/pogs', (req, res) => {
     res.json(rows);
   });
 });
-
+// Route to get all data about an individual pog
+app.get('/api/pogs/:uid', (req, res) => {
+  const uid = req.params.uid;
+  db.get('SELECT * FROM pogs WHERE uid = ?', [uid], (err, row) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(row);
+      }
+  });
+});
 // Route to get all data about an individual pog, including variations
 app.get('/api/pogs/:identifier', (req, res) => {
   const identifier = req.params.identifier;
