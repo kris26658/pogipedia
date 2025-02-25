@@ -1,3 +1,4 @@
+// filepath: /C:/Users/unger.amber/Documents/GitHub/pogipediaAU24-25/app.js
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -24,7 +25,13 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-const ranks = {
+let darkMode = false;
+if (process.env.DARK_MODE === 'true') {
+  darkMode = true;
+  console.log('Dark mode is enabled.');
+
+}
+const lightRanks = {
   'Uncommon': '#EBF8DC',
   'Trash': '#fcdcdc',
   'Common': '#ffedc1',
@@ -33,8 +40,17 @@ const ranks = {
   'Default': '#FFFFFF'
 };
 
+const darkRanks = {
+  'Uncommon': '#395013',
+  'Trash': '#660e0e',
+  'Common': '#ad6309',
+  'Rare': '#1d4a6e',
+  'Mythic': '#332974',
+  'Default': '#414141'
+};
+
 function getBackgroundColor(rank) {
-  return ranks[rank] || ranks['Default'];
+  return darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
 }
 
 // Function to initialize the database
@@ -78,9 +94,15 @@ app.get('/', (req, res) => {
     res.render('index', {
       pogs: pogs,
       getBackgroundColor: getBackgroundColor, // Pass the function to the template
-      ranks: ranks // Pass the ranks object to the template
+      ranks: darkMode ? darkRanks : lightRanks // Pass the ranks object to the template
     });
   });
+});
+
+// Route to handle theme preference
+app.post('/setTheme', (req, res) => {
+  darkMode = req.body.darkMode;
+  res.sendStatus(200);
 });
 
 // Route to handle search request
@@ -127,6 +149,7 @@ app.get('/api/pogs', (req, res) => {
     res.json(rows);
   });
 });
+
 // Route to get all data about an individual pog
 app.get('/api/pogs/:uid', (req, res) => {
   const uid = req.params.uid;
@@ -138,6 +161,7 @@ app.get('/api/pogs/:uid', (req, res) => {
       }
   });
 });
+
 // Route to get all data about an individual pog, including variations
 app.get('/api/pogs/:identifier', (req, res) => {
   const identifier = req.params.identifier;
