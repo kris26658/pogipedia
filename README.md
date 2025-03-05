@@ -76,7 +76,7 @@ Routes
     Returns all available data for the pog, including name, color, tags, and other details.
 
     GET /api/pogs/:identifier
-    Retrieve pog data based on either a uid or a serial number.
+    Retrieve pog data based on either the pogs name or a serial number.
     If the identifier is a number, it's treated as a uid. If it matches the serial pattern (e.g., 1234A01), it’s treated as a serial.
     Returns detailed information based on the identifier.
 
