@@ -45,7 +45,7 @@ git clone https://github.com/csmith1188/pogipedia
 Open the project in Visual Studio Code
 After cloning, navigate to the project directory and open it in VSCode:
 
-cd pogs-collection-manager  
+cd POGIPEDIA
 code .
 
 Install dependencies
