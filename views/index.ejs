@@ -8,14 +8,19 @@
 </head>
 
 <body>
+    <!-- Theme switcher -->
     <label class="switch">
         <input type="checkbox" id="themeSwitch">
         <span class="slider round"></span>
     </label>
+
+    <!-- Main content area -->
     <div id="allPogsTab" class="tab active">
         <div id="title">
             <h2>Pogipedia</h2>
         </div>
+
+        <!-- Search bar for filtering pogs -->
         <div class="search-bar">
             <input type="text" id="searchIdInput" placeholder="Search by ID">
             <input type="text" id="searchNameInput" placeholder="Search by Name">
@@ -32,6 +37,8 @@
                 <option value="tags">Sort by Tags</option>
             </select>
         </div>
+
+        <!-- Table displaying all pogs -->
         <table id="allPogsTable" border="1" style="margin: 0 auto;">
             <thead>
                 <tr>
@@ -84,6 +91,7 @@
             <span>unknown</span>
         </div>
     </div>
+
     <!-- Modal for displaying pog details -->
     <div id="pogDetailsModal" class="modal">
         <div class="modal-content" id="pogDetailsContent">
@@ -91,6 +99,9 @@
         </div>
     </div>
 </body>
+
+<!-- Footer section -->
+<!-- this is just a placeholder for the footer you can change it to something better -->
 <footer>
     <p>i think it just need a footer to look nice i just dont know what to put here</p>
 </footer>

@@ -1,3 +1,4 @@
+/* General body styles */
 body {
     display: flex;
     flex-direction: column;
@@ -8,6 +9,7 @@ body {
     font-size: 18px; /* Increase the base font size */
 }
 
+/* Styles for resized images */
 .resized-image {
     width: 300px; /* Set the desired width */
     height: auto; /* Maintain the aspect ratio */
@@ -25,7 +27,6 @@ body.light-mode #title h2 {
     background-color: #ffffff;
 }
 
-
 /* Dark mode styles */
 body.dark-mode .search-bar {
     background-color: #333333;
@@ -37,18 +38,20 @@ body.dark-mode #title h2 {
     background-color: #333333;
 }
 
-/* Existing styles */
+/* Existing styles for search bar */
 .search-bar {
     padding: 10px;
     border-radius: 5px;
 }
 
+/* Title styles */
 #title h2 {
     font-size: 2.5em;
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* Tab styles */
 .tab {
     display: none;
 }
@@ -57,11 +60,13 @@ body.dark-mode #title h2 {
     display: block;
 }
 
+/* Tab buttons styles */
 .tab-buttons button {
     margin-right: 10px;
     font-size: 1.2em; /* Increase the font size of buttons */
 }
 
+/* Search bar styles */
 .search-bar {
     margin-bottom: 20px;
     text-align: center;
@@ -73,6 +78,7 @@ body.dark-mode #title h2 {
     font-size: 1.2em; /* Increase the font size of search inputs and buttons */
 }
 
+/* Modal styles */
 .modal {
     display: none;
     position: fixed;
@@ -106,6 +112,7 @@ body.dark-mode #title h2 {
     width: 100%;
 }
 
+/* Close button styles */
 .close {
     color: #aaa;
     align-self: flex-end;
@@ -120,10 +127,12 @@ body.dark-mode #title h2 {
     text-decoration: none;
 }
 
+/* Table styles */
 table {
     font-size: 1.2em; /* Increase the font size of table content */
 }
 
+/* Color guide styles */
 .color-guide {
     position: fixed;
     top: 200px;
@@ -225,26 +234,7 @@ table {
     }
 }
 
-
-
-
-
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    font-size: 18px; /* Increase the base font size */
-}
-
-.resized-image {
-    width: 300px; /* Set the desired width */
-    height: auto; /* Maintain the aspect ratio */
-    max-width: 100%; /* Ensure the image does not exceed the container's width */
-}
-
+/* Title styles */
 h2 {
     font-size: 2.5em; /* Increase the font size of the title */
     color: #333; /* Set the color of the title */
@@ -257,6 +247,7 @@ h2 {
     border-radius: 10px; /* Add rounded corners to the border */
 }
 
+/* Tab styles */
 .tab {
     display: none;
 }
@@ -313,10 +304,6 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-/* filepath: /c:/Users/unger.amber/Documents/GitHub/pogipediaAU24-25/public/css/style.css */
-
-/* Existing styles... */
-
 /* Dark mode styles */
 body.dark-mode {
     background-color: #121212;
@@ -360,7 +347,6 @@ body.dark-mode {
 .color-guide.dark-mode .color-item:nth-child() .color-box {
     background-color: #414141; /* Grey for unknown */
 }
-
 
 /* Light mode colors */
 .color-guide.light-mode .color-box.trash { background-color: #fcdcdc; }
