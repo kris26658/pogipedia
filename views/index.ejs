@@ -1,21 +1,53 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>Index Page</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <script src="/js/script.js" defer></script>
-</head>
-
-<body>
-    <label class="switch">
-        <input type="checkbox" id="themeSwitch">
-        <span class="slider round"></span>
-    </label>
-    <div id="allPogsTab" class="tab active">
-        <div id="title">
-            <h2>Pogipedia</h2>
-        </div>
+    
+    <head>
+        
+        <title>Index Page</title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script src="/js/script.js" defer></script>
+    </head>
+    
+    <body>
+        <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider round"></span>
+        </label>
+        <div id="allPogsTab" class="tab active">
+            <div id="title">
+                <h2>Pogipedia</h2>
+            </div>
+            
+            <!-- Color Guide -->
+            <div class="color-guide light-mode">
+                <h3>Color Guide</h3>
+                <div class="color-row">
+                    <div class="color-item">
+                        <div class="color-box trash"></div>
+                        <span>Trash</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box common"></div>
+                        <span>Common</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box uncommon"></div>
+                        <span>Uncommon</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box rare"></div>
+                        <span>Rare</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box mythic"></div>
+                        <span>Mythic</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box unknown"></div>
+                        <span>Unknown</span>
+                    </div>
+                </div>
+            </div>
         <div class="search-bar">
             <input type="text" id="searchIdInput" placeholder="Search by ID">
             <input type="text" id="searchNameInput" placeholder="Search by Name">
@@ -34,56 +66,15 @@
         </div>
         <table id="allPogsTable" border="1" style="margin: 0 auto;">
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Serial</th>
-                    <th>Name</th>
-                    <th>Color</th>
-                    <th>Tags</th>
-                </tr>
+               
             </thead>
             <tbody>
-                <% pogs.forEach(function(pog) { %>
-                    <tr class="list-color-change" style="background-color: <%= getBackgroundColor(pog.rank) %>;" onclick="showPogDetails(<%= pog.uid %>)">
-                        <td><%= pog.uid %></td>
-                        <td><%= pog.serial %></td>
-                        <td><%= pog.name %></td>
-                        <td><%= pog.color %></td>
-                        <td><%= pog.tags %></td>
-                    </tr>
-                <% }); %>
+              
             </tbody>
         </table>
     </div>
 
     <!-- Color Guide -->
-    <div class="color-guide light-mode">
-        <h3>Color Guide</h3>
-        <div class="color-item">
-            <div class="color-box trash"></div>
-            <span>Trash</span>
-        </div>
-        <div class="color-item">
-            <div class="color-box common"></div>
-            <span>Common</span>
-        </div>
-        <div class="color-item">
-            <div class="color-box uncommon"></div>
-            <span>Uncommon</span>
-        </div>
-        <div class="color-item">
-            <div class="color-box rare"></div>
-            <span>Rare</span>
-        </div>
-        <div class="color-item">
-            <div class="color-box mythic"></div>
-            <span>Mythic</span>
-        </div>
-        <div class="color-item">
-            <div class="color-box unknown"></div>
-            <span>unknown</span>
-        </div>
-    </div>
     <!-- Modal for displaying pog details -->
     <div id="pogDetailsModal" class="modal">
         <div class="modal-content" id="pogDetailsContent">
@@ -95,3 +86,5 @@
     <p>i think it just need a footer to look nice i just dont know what to put here</p>
 </footer>
 </html>
+
+</body>
