@@ -50,7 +50,10 @@ const darkRanks = {
 };
 
 function getBackgroundColor(rank) {
-  return darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
+  console.log('Rank:', rank); // Debugging: Log the rank value
+  const color = darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
+  console.log('Background Color:', color); // Debugging: Log the background color
+  return color;
 }
 
 // Function to initialize the database
@@ -139,9 +142,8 @@ app.post('/searchPogs', (req, res) => {
   });
 });
 
-// Route to get all pogs with their tags using uid for uid tags
 app.get('/api/pogs', (req, res) => {
-  const sql = 'SELECT uid, serial, name, color, tags FROM pogs';
+  const sql = 'SELECT uid, serial, name, color, tags, rank FROM pogs';
   db.all(sql, [], (err, rows) => {
     if (err) {
       return res.status(500).send(err.message);
