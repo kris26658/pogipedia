@@ -126,9 +126,9 @@ function handleSort() {
     }
     
 } function showPogDetails(uid) {
-    fetch('/api/pogs')
-    .then(response => response.json())
-    .then(pogs => {
+    fetch(`/api/pogs/${uid}`)
+        .then(response => response.json())
+        .then(data => {
             const modal = document.getElementById("pogDetailsModal");
             const modalContent = document.getElementById("pogDetailsContent");
             const imageUrl = `/pogs/${data.imageUrl}`;
@@ -312,6 +312,7 @@ function showPogDetails(uid) {
             console.error('Error fetching pog details:', error);
         });
 }
+
 document.addEventListener('DOMContentLoaded', function () {
     var themeSwitch = document.getElementById('themeSwitch');
 
@@ -323,26 +324,32 @@ document.addEventListener('DOMContentLoaded', function () {
     themeSwitch.addEventListener('change', function () {
         var isDarkMode = themeSwitch.checked;
 
-        // Apply the theme immediately without confirmation
-        applyTheme(isDarkMode);
+        // Show a confirmation dialog
+        var confirmChange = confirm("Changing the theme will reload the page, which means your search will revert back to default. Do you want to proceed?");
+        if (confirmChange) {
+            applyTheme(isDarkMode);
 
-        // Store the theme preference in local storage
-        localStorage.setItem('darkMode', isDarkMode);
+            // Store the theme preference in local storage
+            localStorage.setItem('darkMode', isDarkMode);
 
-        // Send the theme preference to the server
-        fetch('/setTheme', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ darkMode: isDarkMode })
-        }).then(() => {
-            // Clear the search inputs
-            clearSearchInputs();
+            // Send the theme preference to the server
+            fetch('/setTheme', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ darkMode: isDarkMode })
+            }).then(() => {
+                // Clear the search inputs
+                clearSearchInputs();
 
-            // Reload the page to apply the theme change
-            location.reload();
-        });
+                // Reload the page to apply the theme change
+                location.reload();
+            });
+        } else {
+            // Revert the switch to its previous state
+            themeSwitch.checked = !isDarkMode;
+        }
     });
 });
 
@@ -418,7 +425,6 @@ function adjustTable() {
     const thead = table.querySelector('thead');
     const tbody = table.querySelector('tbody');
 
-    
     // Fetch pogs data from the server
     fetch('/api/pogs')
         .then(response => response.json())
@@ -435,7 +441,7 @@ function adjustTable() {
                                 <th>Tags</th>
                             </tr>
                         `;
-                        tbody.innerHTML = pogs.map(pog => `
+                tbody.innerHTML = pogs.map(pog => `
                             <tr class="list-color-change" style="background-color: ${getBackgroundColor(pog.rank)};" onclick="showPogDetails(${pog.uid})">
                                 <td data-label="ID">${pog.uid}</td>
                                 <td data-label="Serial">${pog.serial}</td>
@@ -450,7 +456,7 @@ function adjustTable() {
                                 <th>ID</th>
                                 <th>Serial</th>
                                 <th>Name</th>
-                               
+                                <th>Tags</th>
                             </tr>
                         `;
                 tbody.innerHTML = pogs.map(pog => `
@@ -458,7 +464,7 @@ function adjustTable() {
                                 <td data-label="ID">${pog.uid}</td>
                                 <td data-label="Serial">${pog.serial}</td>
                                 <td data-label="Name">${pog.name}</td>
-                              
+                                <td data-label="Tags">${pog.tags}</td>
                             </tr>
                         `).join('');
             }
@@ -504,17 +510,16 @@ function getBackgroundColor(rank) {
     };
 
     const darkRanks = {
-        'Uncommon': '#3d442f',
-        'Trash': '#412020',
-        'Common': '#4b3317',
-        'Rare': '#2d3f4d',
-        'Mythic': '#34314b',
-        'Default': '#333333'
+        'Uncommon': '#395013',
+        'Trash': '#660e0e',
+        'Common': '#ad6309',
+        'Rare': '#1d4a6e',
+        'Mythic': '#332974',
+        'Default': '#414141'
     };
 
     const isDarkMode = document.body.classList.contains('dark-mode');
     const ranks = isDarkMode ? darkRanks : lightRanks;
 
-    // Fallback if rank is undefined or invalid
     return ranks[rank] || ranks['Default'];
 }

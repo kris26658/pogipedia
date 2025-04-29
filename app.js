@@ -1,3 +1,4 @@
+// filepath: /C:/Users/unger.amber/Documents/GitHub/pogipediaAU24-25/app.js
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -24,14 +25,12 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// Check if dark mode is enabled through environment variable
 let darkMode = false;
 if (process.env.DARK_MODE === 'true') {
   darkMode = true;
   console.log('Dark mode is enabled.');
-}
 
-// Define color schemes for light and dark modes
+}
 const lightRanks = {
   'Uncommon': '#EBF8DC',
   'Trash': '#fcdcdc',
@@ -50,7 +49,6 @@ const darkRanks = {
   'Default': '#414141'
 };
 
-// Function to get background color based on rank and theme
 function getBackgroundColor(rank) {
   console.log('Rank:', rank); // Debugging: Log the rank value
   const color = darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
@@ -61,7 +59,7 @@ function getBackgroundColor(rank) {
 // Function to initialize the database
 function initializeDatabase() {
   db.serialize(() => {
-    // Create the 'pogs' table if it doesn't exist
+    // Create tables
     db.run(`
       CREATE TABLE IF NOT EXISTS pogs (
         uid INTEGER PRIMARY KEY,
@@ -77,7 +75,6 @@ function initializeDatabase() {
       )
     `);
 
-    // Create the 'variations' table if it doesn't exist
     db.run(`
       CREATE TABLE IF NOT EXISTS variations (
         uid INTEGER PRIMARY KEY,
@@ -91,13 +88,12 @@ function initializeDatabase() {
 
 // Route to render the index page
 app.get('/', (req, res) => {
-  // Fetch all pogs from the database
+  // Fetch all pogs
   db.all('SELECT * FROM pogs', (err, pogs) => {
     if (err) {
       return res.status(500).send(err.message);
     }
 
-    // Render the index page with the fetched pogs and pass necessary data to the template
     res.render('index', {
       pogs: pogs,
       getBackgroundColor: getBackgroundColor, // Pass the function to the template
@@ -118,7 +114,6 @@ app.post('/searchPogs', (req, res) => {
   let query = 'SELECT * FROM pogs WHERE 1=1';
   let params = [];
 
-  // Add conditions to the query based on the provided search parameters
   if (id) {
     query += ' AND uid = ?';
     params.push(id);
@@ -136,7 +131,6 @@ app.post('/searchPogs', (req, res) => {
     params.push(`%${tags}%`);
   }
 
-  // Execute the query and return the results
   db.all(query, params, (err, rows) => {
     if (err) {
       return res.status(500).send(err.message);
@@ -223,7 +217,6 @@ app.get('/api/collections/:name', (req, res) => {
 });
 
 // Start the server
-// on port 3000
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
