@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<<<<<<< Updated upstream
 
 <head>
     <title>Index Page</title>
@@ -21,6 +22,65 @@
         </div>
 
         <!-- Search bar for filtering pogs -->
+=======
+    
+    <head>
+        
+        <title>Index Page</title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script src="/js/script.js" defer>
+
+        </script>
+    </head>
+    
+    <body>
+        <script>
+            function scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth' // Smooth scrolling effect
+                });
+            }</script>
+        <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider round"></span>
+        </label>
+        <div id="allPogsTab" class="tab active">
+            <div id="title">
+                <h2>Pogipedia</h2>
+            </div>
+            
+            <!-- Color Guide -->
+            <div class="color-guide light-mode">
+                <h3>Color Guide</h3>
+                <div class="color-row">
+                    <div class="color-item">
+                        <div class="color-box trash"></div>
+                        <span>Trash</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box common"></div>
+                        <span>Common</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box uncommon"></div>
+                        <span>Uncommon</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box rare"></div>
+                        <span>Rare</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box mythic"></div>
+                        <span>Mythic</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box unknown"></div>
+                        <span>Unknown</span>
+                    </div>
+                </div>
+            </div>
+>>>>>>> Stashed changes
         <div class="search-bar">
             <input type="text" id="searchIdInput" placeholder="Search by ID">
             <input type="text" id="searchNameInput" placeholder="Search by Name">
@@ -103,6 +163,7 @@
 <!-- Footer section -->
 <!-- this is just a placeholder for the footer you can change it to something better -->
 <footer>
-    <p>i think it just need a footer to look nice i just dont know what to put here</p>
+
+    <button onclick="scrollToTop()" class="back-to-top">Back to Top</button>
 </footer>
 </html>

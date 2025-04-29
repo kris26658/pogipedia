@@ -163,8 +163,11 @@ function showPogDetails(uid) {
             console.error('Error fetching pog details:', error); // Log error if fetching fails
         });
 }
+<<<<<<< Updated upstream
 
 // Document ready event to set up theme switch and preferences
+=======
+>>>>>>> Stashed changes
 document.addEventListener('DOMContentLoaded', function () {
     var themeSwitch = document.getElementById('themeSwitch');
 
@@ -176,14 +179,20 @@ document.addEventListener('DOMContentLoaded', function () {
     themeSwitch.addEventListener('change', function () {
         var isDarkMode = themeSwitch.checked; // Get new theme preference
 
+<<<<<<< Updated upstream
         // Show a confirmation dialog before changing theme
         var confirmChange = confirm("Changing the theme will reload the page, which means your search will revert back to default. Do you want to proceed?");
         if (confirmChange) {
             applyTheme(isDarkMode); // Apply selected theme
+=======
+        // Apply the theme immediately without confirmation
+        applyTheme(isDarkMode);
+>>>>>>> Stashed changes
 
-            // Store the theme preference in local storage
-            localStorage.setItem('darkMode', isDarkMode);
+        // Store the theme preference in local storage
+        localStorage.setItem('darkMode', isDarkMode);
 
+<<<<<<< Updated upstream
             // Send the theme preference to the server
             fetch('/setTheme', {
                 method: 'POST',
@@ -199,6 +208,22 @@ document.addEventListener('DOMContentLoaded', function () {
             // Revert the switch to its previous state
             themeSwitch.checked = !isDarkMode;
         }
+=======
+        // Send the theme preference to the server
+        fetch('/setTheme', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ darkMode: isDarkMode })
+        }).then(() => {
+            // Clear the search inputs
+            clearSearchInputs();
+
+            // Reload the page to apply the theme change
+            location.reload();
+        });
+>>>>>>> Stashed changes
     });
 });
 
@@ -217,9 +242,128 @@ function applyTheme(isDarkMode) {
         document.querySelector('.modal-content').classList.add('dark-mode'); // Add dark mode to modal content
         document.querySelector('.color-guide').classList.add('dark-mode'); // Add dark mode to color guide
     } else {
+<<<<<<< Updated upstream
         document.body.classList.remove('dark-mode'); // Remove dark mode class from body
         document.querySelector('.modal-content').classList.remove('dark-mode'); // Remove dark mode from modal content
         document.querySelector('.color-guide').classList.remove('dark-mode'); // Remove dark mode from color guide
+=======
+        document.body.classList.remove('dark-mode');
+        document.querySelector('.modal-content').classList.remove('dark-mode');
+        document.querySelector('.color-guide').classList.remove('dark-mode');
+    }
+}
+
+function closeModal() {
+    var modal = document.getElementById("pogDetailsModal");
+    modal.style.display = "none";
+}
+window.onload = function () {
+    // Ensure the modal is hidden when the page loads
+    var modal = document.getElementById("pogDetailsModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+
+    // Add the "loaded" class to the body to prevent FOUC
+    document.body.classList.add('loaded');
+
+    // Temporarily comment out adjustTable for debugging
+    // adjustTable();
+
+    // Add an event listener to adjust the table on window resize
+    window.addEventListener('resize', adjustTable);
+};
+
+// Check if the user has been prompted for dark mode before
+if (!localStorage.getItem('darkModePrompted')) {
+    var isDarkMode = confirm("Would you like to enable dark mode?");
+    applyTheme(isDarkMode);
+
+    // Store the user's preference and that they have been prompted
+    localStorage.setItem('darkModePrompted', 'true');
+    localStorage.setItem('darkMode', isDarkMode);
+} else {
+    var isDarkMode = localStorage.getItem('darkMode') === 'true';
+    applyTheme(isDarkMode);
+}
+
+// Add the "loaded" class to the body to prevent FOUC
+document.body.classList.add('loaded');
+
+// Adjust the table layout based on screen size
+adjustTable();
+
+// Add an event listener to adjust the table on window resize
+window.addEventListener('resize', adjustTable);
+;
+
+// Function to adjust the table layout
+function adjustTable() {
+    const screenWidth = window.innerWidth;
+    const table = document.getElementById('allPogsTable');
+    if (!table) return;
+
+    const thead = table.querySelector('thead');
+    const tbody = table.querySelector('tbody');
+
+    
+    // Fetch pogs data from the server
+    fetch('/api/pogs')
+        .then(response => response.json())
+        .then(pogs => {
+            thead.innerHTML = '';
+
+            if (screenWidth > 980) {
+                thead.innerHTML = `
+                            <tr>
+                                <th>ID</th>
+                                <th>Serial</th>
+                                <th>Name</th>
+                                <th>Color</th>
+                                <th>Tags</th>
+                            </tr>
+                        `;
+                tbody.innerHTML = pogs.map(pog => `
+                            <tr class="list-color-change" style="background-color: ${getBackgroundColor(pog.rank)};" onclick="showPogDetails(${pog.uid})">
+                                <td data-label="ID">${pog.uid}</td>
+                                <td data-label="Serial">${pog.serial}</td>
+                                <td data-label="Name">${pog.name}</td>
+                                <td data-label="Color">${pog.color}</td>
+                                <td data-label="Tags">${pog.tags}</td>
+                            </tr>
+                        `).join('');
+            } else {
+                thead.innerHTML = `
+                            <tr>
+                                <th>ID</th>
+                                <th>Serial</th>
+                                <th>Name</th>
+                               
+                            </tr>
+                        `;
+                tbody.innerHTML = pogs.map(pog => `
+                            <tr class="list-color-change" style="background-color: ${getBackgroundColor(pog.rank)};" onclick="showPogDetails(${pog.uid})">
+                                <td data-label="ID">${pog.uid}</td>
+                                <td data-label="Serial">${pog.serial}</td>
+                                <td data-label="Name">${pog.name}</td>
+                              
+                            </tr>
+                        `).join('');
+            }
+        })
+        .catch(error => console.error('Error fetching pogs:', error));
+}
+// Function to apply the theme
+function applyTheme(isDarkMode) {
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.modal-content').classList.add('dark-mode');
+        document.querySelector('.color-guide').classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+        document.querySelector('.modal-content').classList.remove('dark-mode');
+        document.querySelector('.color-guide').classList.remove('dark-mode');
+>>>>>>> Stashed changes
     }
 }
 
@@ -256,4 +400,41 @@ window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none"; // Hide modal
     }
+<<<<<<< Updated upstream
+=======
+};
+function getBackgroundColor(rank) {
+    const lightRanks = {
+        'Uncommon': '#EBF8DC',
+        'Trash': '#fcdcdc',
+        'Common': '#ffedc1',
+        'Rare': '#DCF2F8',
+        'Mythic': '#E7D5F3',
+        'Default': '#FFFFFF'
+    };
+
+    // const darkRanks = {
+    //     'Uncommon': '#395013',
+    //     'Trash': '#660e0e',
+    //     'Common': '#ad6309',
+    //     'Rare': '#1d4a6e',
+    //     'Mythic': '#332974',
+    //     'Default': '#414141'
+    // };
+
+    const darkRanks = {
+        'Uncommon': '#3d442f',
+        'Trash': '#412020',
+        'Common': '#4b3317',
+        'Rare': '#2d3f4d',
+        'Mythic': '#34314b',
+        'Default': '#333333'
+    };
+
+
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const ranks = isDarkMode ? darkRanks : lightRanks;
+
+    return ranks[rank] || ranks['Default'];
+>>>>>>> Stashed changes
 }
