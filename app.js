@@ -147,15 +147,15 @@ app.post('/searchPogs', (req, res) => {
 
 // Route to get all pogs with their tags using uid for uid tags
 app.get('/api/pogs', (req, res) => {
-  const sql = 'SELECT uid, serial, name, color, tags FROM pogs';
+  const sql = 'SELECT uid, serial, name, color, tags, rank FROM pogs';
   db.all(sql, [], (err, rows) => {
     if (err) {
       return res.status(500).send(err.message);
     }
+    console.log('Fetched pogs:', rows); // Log the fetched data
     res.json(rows);
   });
 });
-
 // Route to get all data about an individual pog
 app.get('/api/pogs/:uid', (req, res) => {
   const uid = req.params.uid;
