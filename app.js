@@ -42,20 +42,17 @@ const lightRanks = {
 };
 
 const darkRanks = {
-  'Uncommon': '#395013',
-  'Trash': '#660e0e',
-  'Common': '#ad6309',
-  'Rare': '#1d4a6e',
-  'Mythic': '#332974',
-  'Default': '#414141'
+  'Uncommon': '#3d442f',
+  'Trash': '#412020',
+  'Common': '#4b3317',
+  'Rare': '#2d3f4d',
+  'Mythic': '#34314b',
+  'Default': '#333333'
 };
 
 // Function to get background color based on rank and theme
 function getBackgroundColor(rank) {
-  console.log('Rank:', rank); // Debugging: Log the rank value
-  const color = darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
-  console.log('Background Color:', color); // Debugging: Log the background color
-  return color;
+  return darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
 }
 
 // Function to initialize the database
@@ -148,6 +145,7 @@ app.post('/searchPogs', (req, res) => {
   });
 });
 
+// Route to get all pogs with their tags using uid for uid tags
 app.get('/api/pogs', (req, res) => {
   const sql = 'SELECT uid, serial, name, color, tags, rank FROM pogs';
   db.all(sql, [], (err, rows) => {
