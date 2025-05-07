@@ -160,12 +160,13 @@ app.get('/api/pogs', (req, res) => {
 app.get('/api/pogs/:uid', (req, res) => {
   const uid = req.params.uid;
   db.get('SELECT * FROM pogs WHERE uid = ?', [uid], (err, row) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(row);
-      }
-  });
+    if (err) {
+        res.status(500).json({ error: err.message });
+    } else {
+        console.log('Fetched row:', row); // Debugging
+        res.json(row);
+    }
+});
 });
 
 // Route to get all data about an individual pog, including variations

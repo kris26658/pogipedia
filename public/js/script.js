@@ -124,15 +124,16 @@ function handleSort() {
             sortTable(4);
             break;
     }
-    
+
 } function showPogDetails(uid) {
-    fetch('/api/pogs')
-    .then(response => response.json())
-    .then(pogs => {
-            const modal = document.getElementById("pogDetailsModal");
-            const modalContent = document.getElementById("pogDetailsContent");
-            const imageUrl = `/pogs/${data.imageUrl}`;
-            const fallbackImageUrl = `/pogs/${data.imageUrl.replace('.JPG', '.png')}`;
+    fetch(`/api/pogs/${uid}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Fetched data:', data); // Debugging
+            var modal = document.getElementById("pogDetailsModal");
+            var modalContent = document.getElementById("pogDetailsContent");
+            var imageUrlWebp = `/pogs/${data.url}.webp`; // WebP image URL
+            var imageUrlPng = `/pogs/${data.url}.png`;   // PNG image URL
 
             modalContent.innerHTML = `
                 <div class="modal-text">
@@ -148,14 +149,29 @@ function handleSort() {
                     <p><strong>Creator:</strong> ${data.creator}</p>
                 </div>
                 <div class="modal-image">
-                    <img id="pogImage" class="resized-image" src="${imageUrl}" alt="${data.name}" onerror="this.onerror=null;this.src='${fallbackImageUrl}';" />
+                    <img id="pogImage" class="resized-image" src="${imageUrlWebp}" alt="${data.name}" />
                 </div>
             `;
+
+            // Add error handling for the image
+            var pogImage = document.getElementById("pogImage");
+            pogImage.onerror = function () {
+                console.log('Failed to load:', pogImage.src);
+                if (pogImage.src === imageUrlWebp) {
+                    console.warn('WebP failed, trying PNG:', imageUrlPng);
+                    pogImage.src = imageUrlPng;
+                } else {
+                    console.error('Both WebP and PNG failed, using fallback.');
+                    pogImage.src = '/path/to/fallback-image.webp';
+                }
+            };
+
             modal.style.display = "flex";
         })
-        .catch(error => console.error('Error fetching pog details:', error));
-
-} 
+        .catch(error => {
+            console.error('Error fetching pog details:', error);
+        });
+}
 function showTab(tabId) {
     var tabs = document.querySelectorAll('.tab');
     tabs.forEach(function (tab) {
@@ -163,7 +179,7 @@ function showTab(tabId) {
     });
     document.getElementById(tabId).classList.add('active');
 }
- function searchPogs() {
+function searchPogs() {
     var idInput = document.getElementById("searchIdInput").value;
     var nameInput = document.getElementById("searchNameInput").value;
     var serialInput = document.getElementById("searchSerialInput").value;
@@ -286,9 +302,11 @@ function showPogDetails(uid) {
             console.log('Fetched data:', data); // Log the entire data object for debugging
             var modal = document.getElementById("pogDetailsModal");
             var modalContent = document.getElementById("pogDetailsContent");
-            var imageUrl = `/pogs/${data.url}.JPG`; // Construct the image URL using the url from the database
+            var imageUrl3 = `/pogs/${data.url}.JPG`; // Construct the image URL using the url from the database
             var imageUrl2 = `/pogs/${data.url}.png`; // Construct the second image URL using the url from the database
+            var imageUrl = `/pogs/${data.url}.webp`; // Construct the third image URL using the url from the database
             console.log('Image URL:', imageUrl); // Log the image URL for debugging
+
             modalContent.innerHTML = `
                 <div class="modal-text">
                     <span class="close" onclick="closeModal()">&times;</span>
@@ -303,9 +321,17 @@ function showPogDetails(uid) {
                     <p><strong>Creator:</strong> ${data.creator}</p>
                 </div>
                 <div class="modal-image">
-                    <img id="pogImage" class="resized-image" src="${imageUrl}" alt="${data.name}" onerror="this.onerror=null;this.src='${imageUrl2}';" />
+                    <img id="pogImage" class="resized-image" src="${imageUrl}" alt="${data.name}" />
                 </div>
             `;
+
+            // Add error handling for the image
+            var pogImage = document.getElementById("pogImage");
+            pogImage.onerror = function () {
+                console.error('Image failed to load:', pogImage.src);
+                pogImage.src = '/path/to/fallback-image.webp'; // Fallback image
+            };
+
             modal.style.display = "flex";
         })
         .catch(error => {
@@ -418,7 +444,7 @@ function adjustTable() {
     const thead = table.querySelector('thead');
     const tbody = table.querySelector('tbody');
 
-    
+
     // Fetch pogs data from the server
     fetch('/api/pogs')
         .then(response => response.json())
@@ -435,7 +461,7 @@ function adjustTable() {
                                 <th>Tags</th>
                             </tr>
                         `;
-                        tbody.innerHTML = pogs.map(pog => `
+                tbody.innerHTML = pogs.map(pog => `
                             <tr class="list-color-change" style="background-color: ${getBackgroundColor(pog.rank)};" onclick="showPogDetails(${pog.uid})">
                                 <td data-label="ID">${pog.uid}</td>
                                 <td data-label="Serial">${pog.serial}</td>
