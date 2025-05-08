@@ -8,28 +8,8 @@ body {
     margin: 0;
     font-size: 18px; /* Base font size */
     visibility: hidden; /* Prevent FOUC */
-    font-family: 'Courier New', monospace; /* Set the universal font */
-    
-}
-footer {
-    text-align: center; /* Center-align the content inside the footer */
-}
-/* Back to Top Button Styles */
-footer .back-to-top {
-    margin: 10px auto; /* Add vertical margin and center horizontally */
-    padding: 10px 20px;
-    background-color: #b1b1b1; /* Button background color */
-    color: #353434; /* Button text color */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    display: inline-block; /* Ensure the button respects the text alignment */
 }
 
-footer .back-to-top:hover {
-    background-color:  #4d4b4b /* Darker blue on hover */
-}
 body.loaded {
     visibility: visible; /* Make the body visible after the page is fully loaded */
 }
@@ -58,26 +38,6 @@ body.light-mode #title h2 {
 }
 
 /* Dark mode styles */
-body.dark-mode #pogDetailsModal {
-    background-color: rgba(0, 0, 0, 0.8); /* Darker background overlay */
-}
-
-body.dark-mode #pogDetailsModal .modal-content {
-    background-color: #1e1e1e; /* Dark background for the modal */
-    color: #ffffff; /* Light text color for readability */
-    border: 1px solid #444; /* Subtle border for the modal */
-    
-}
-
-body.dark-mode #pogDetailsModal .modal-text h2 {
-    color: #ffffff; /* Ensure the title is visible in dark mode */
-}
-
-body.dark-mode #pogDetailsModal .modal-text p {
-    color: #cccccc; /* Slightly lighter text for better readability */
-}
-
-
 body.dark-mode {
     background-color: #121212;
     color: #ffffff;
@@ -88,10 +48,9 @@ body.dark-mode .search-bar {
     color: #ffffff;
 }
 
-body.dark-mode  .h2 {
-    color: #5f5c5c;
+body.dark-mode #title h2 {
+    color: #ffffff;
     background-color: #333333;
-   
 }
 
 /* Title styles */
@@ -102,7 +61,7 @@ h2 {
     margin-bottom: 20px; /* Space below the title */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
     border: 2px solid #d3d3d3; /* Border around the title */
-    background-color: #b9b7b7; /* Title background color */
+    background-color: #f0f0f0; /* Title background color */
     padding: 10px; /* Padding inside the border */
     border-radius: 10px; /* Rounded corners */
 }
@@ -173,9 +132,6 @@ h2 {
         font-size: x-large;
        
     }
-    body {
-        font-size: 30px; /* Increase base font size for mobile */
-    }
 
     #pogDetailsContent .modal-image {
         flex: 0 0 auto; /* Allow the image to resize naturally */
@@ -185,10 +141,6 @@ h2 {
         margin-right: 20px; /* Add spacing between the image and text */
         align-self: center; /* Center the image horizontally */
 
-    }
-    footer .back-to-top {
-        padding: 20px 40px; /* Increase padding for a larger button */
-        font-size: 22px; /* Increase font size for the button text */
     }
     
 }
@@ -204,7 +156,7 @@ h2 {
         max-width: none; /* Remove the maximum width constraint */
         max-height: 90vh; /* Use 90% of the viewport height */
         padding: 15px; /* Reduce padding for smaller screens */
-        font-size: xx-large;
+        font-size: x-large;
     }
     #pogDetailsContent .modal-image {
         width: 100%; /* Make the image take up the full width of the container */
@@ -330,9 +282,7 @@ tbody tr:hover {
     align-items: center;
     text-align: center;
 }
-.color-guide.dark-mode h3 {
-    color: #bbbbbb; /* Lighter text color for better readability in dark mode */
-}
+
 .color-box {
     width: 40px; /* Box size */
     height: 40px;
@@ -343,7 +293,7 @@ tbody tr:hover {
 
 .color-item span {
     font-size: 14px;
-    color: #949494;
+    color: #555;
 }
 
 .color-box.trash { background-color: #d9534f; }
@@ -425,9 +375,9 @@ input:checked + .slider:before {
 .color-guide.light-mode .color-box.unknown { background-color: #FFFFFF; }
 
 /* Dark mode colors */
-.color-guide.dark-mode .color-box.trash { background-color: #412020; }
-.color-guide.dark-mode .color-box.common { background-color: #4b3317; }
-.color-guide.dark-mode .color-box.uncommon { background-color: #3d442f; }
-.color-guide.dark-mode .color-box.rare { background-color: #2d3f4d; }
-.color-guide.dark-mode .color-box.mythic { background-color: #34314b; }
-.color-guide.dark-mode .color-box.unknown { background-color:  #333333; }
+.color-guide.dark-mode .color-box.trash { background-color: #660e0e; }
+.color-guide.dark-mode .color-box.common { background-color: #ff8c00; }
+.color-guide.dark-mode .color-box.uncommon { background-color: #556b2f; }
+.color-guide.dark-mode .color-box.rare { background-color: #4682b4; }
+.color-guide.dark-mode .color-box.mythic { background-color: #6a5acd; }
+.color-guide.dark-mode .color-box.unknown { background-color: #414141; }
