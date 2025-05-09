@@ -1,4 +1,3 @@
-// filepath: /C:/Users/unger.amber/Documents/GitHub/pogipediaAU24-25/app.js
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -25,12 +24,14 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
+// Check if dark mode is enabled through environment variable
 let darkMode = false;
 if (process.env.DARK_MODE === 'true') {
   darkMode = true;
   console.log('Dark mode is enabled.');
-
 }
+
+// Define color schemes for light and dark modes
 const lightRanks = {
   'Uncommon': '#EBF8DC',
   'Trash': '#fcdcdc',
@@ -41,25 +42,23 @@ const lightRanks = {
 };
 
 const darkRanks = {
-  'Uncommon': '#395013',
-  'Trash': '#660e0e',
-  'Common': '#ad6309',
-  'Rare': '#1d4a6e',
-  'Mythic': '#332974',
-  'Default': '#414141'
+  'Uncommon': '#3d442f',
+  'Trash': '#412020',
+  'Common': '#4b3317',
+  'Rare': '#2d3f4d',
+  'Mythic': '#34314b',
+  'Default': '#333333'
 };
 
+// Function to get background color based on rank and theme
 function getBackgroundColor(rank) {
-  console.log('Rank:', rank); // Debugging: Log the rank value
-  const color = darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
-  console.log('Background Color:', color); // Debugging: Log the background color
-  return color;
+  return darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
 }
 
 // Function to initialize the database
 function initializeDatabase() {
   db.serialize(() => {
-    // Create tables
+    // Create the 'pogs' table if it doesn't exist
     db.run(`
       CREATE TABLE IF NOT EXISTS pogs (
         uid INTEGER PRIMARY KEY,
@@ -75,6 +74,7 @@ function initializeDatabase() {
       )
     `);
 
+    // Create the 'variations' table if it doesn't exist
     db.run(`
       CREATE TABLE IF NOT EXISTS variations (
         uid INTEGER PRIMARY KEY,
@@ -88,12 +88,13 @@ function initializeDatabase() {
 
 // Route to render the index page
 app.get('/', (req, res) => {
-  // Fetch all pogs
+  // Fetch all pogs from the database
   db.all('SELECT * FROM pogs', (err, pogs) => {
     if (err) {
       return res.status(500).send(err.message);
     }
 
+    // Render the index page with the fetched pogs and pass necessary data to the template
     res.render('index', {
       pogs: pogs,
       getBackgroundColor: getBackgroundColor, // Pass the function to the template
@@ -114,6 +115,7 @@ app.post('/searchPogs', (req, res) => {
   let query = 'SELECT * FROM pogs WHERE 1=1';
   let params = [];
 
+  // Add conditions to the query based on the provided search parameters
   if (id) {
     query += ' AND uid = ?';
     params.push(id);
@@ -131,6 +133,7 @@ app.post('/searchPogs', (req, res) => {
     params.push(`%${tags}%`);
   }
 
+  // Execute the query and return the results
   db.all(query, params, (err, rows) => {
     if (err) {
       return res.status(500).send(err.message);
@@ -142,26 +145,28 @@ app.post('/searchPogs', (req, res) => {
   });
 });
 
+// Route to get all pogs with their tags using uid for uid tags
 app.get('/api/pogs', (req, res) => {
   const sql = 'SELECT uid, serial, name, color, tags, rank FROM pogs';
   db.all(sql, [], (err, rows) => {
     if (err) {
       return res.status(500).send(err.message);
     }
+    console.log('Fetched pogs:', rows); // Log the fetched data
     res.json(rows);
   });
 });
-
 // Route to get all data about an individual pog
 app.get('/api/pogs/:uid', (req, res) => {
   const uid = req.params.uid;
   db.get('SELECT * FROM pogs WHERE uid = ?', [uid], (err, row) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(row);
-      }
-  });
+    if (err) {
+        res.status(500).json({ error: err.message });
+    } else {
+        console.log('Fetched row:', row); // Debugging
+        res.json(row);
+    }
+});
 });
 
 // Route to get all data about an individual pog, including variations
@@ -217,6 +222,7 @@ app.get('/api/collections/:name', (req, res) => {
 });
 
 // Start the server
+// on port 3000
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
