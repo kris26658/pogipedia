@@ -296,12 +296,6 @@ tbody tr:hover {
     color: #555;
 }
 
-.color-box.trash { background-color: #d9534f; }
-.color-box.common { background-color: #5bc0de; }
-.color-box.uncommon { background-color: #5cb85c; }
-.color-box.rare { background-color: #f0ad4e; }
-.color-box.mythic { background-color: #d9534f; }
-.color-box.unknown { background-color: #6c757d; }
 
 /* Switch styles */
 .switch {

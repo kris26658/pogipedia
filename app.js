@@ -41,19 +41,16 @@ const lightRanks = {
 };
 
 const darkRanks = {
-  'Uncommon': '#395013',
-  'Trash': '#660e0e',
-  'Common': '#ad6309',
-  'Rare': '#1d4a6e',
-  'Mythic': '#332974',
-  'Default': '#414141'
+  'Uncommon': '#3d442f',
+  'Trash': '#412020',
+  'Common': '#4b3317',
+  'Rare': '#2d3f4d',
+  'Mythic': '#34314b',
+  'Default': '#333333'
 };
 
 function getBackgroundColor(rank) {
-  console.log('Rank:', rank); // Debugging: Log the rank value
-  const color = darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
-  console.log('Background Color:', color); // Debugging: Log the background color
-  return color;
+  return darkMode ? darkRanks[rank] || darkRanks['Default'] : lightRanks[rank] || lightRanks['Default'];
 }
 
 // Function to initialize the database
@@ -142,26 +139,28 @@ app.post('/searchPogs', (req, res) => {
   });
 });
 
+// Route to get all pogs with their tags using uid for uid tags
 app.get('/api/pogs', (req, res) => {
   const sql = 'SELECT uid, serial, name, color, tags, rank FROM pogs';
   db.all(sql, [], (err, rows) => {
     if (err) {
       return res.status(500).send(err.message);
     }
+    console.log('Fetched pogs:', rows); // Log the fetched data
     res.json(rows);
   });
 });
-
 // Route to get all data about an individual pog
 app.get('/api/pogs/:uid', (req, res) => {
   const uid = req.params.uid;
   db.get('SELECT * FROM pogs WHERE uid = ?', [uid], (err, row) => {
-      if (err) {
-          res.status(500).json({ error: err.message });
-      } else {
-          res.json(row);
-      }
-  });
+    if (err) {
+        res.status(500).json({ error: err.message });
+    } else {
+        console.log('Fetched row:', row); // Debugging
+        res.json(row);
+    }
+});
 });
 
 // Route to get all data about an individual pog, including variations
