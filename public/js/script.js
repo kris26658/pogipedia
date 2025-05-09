@@ -124,15 +124,16 @@ function handleSort() {
             sortTable(4);
             break;
     }
-    
+
 } function showPogDetails(uid) {
     fetch(`/api/pogs/${uid}`)
         .then(response => response.json())
         .then(data => {
-            const modal = document.getElementById("pogDetailsModal");
-            const modalContent = document.getElementById("pogDetailsContent");
-            const imageUrl = `/pogs/${data.imageUrl}`;
-            const fallbackImageUrl = `/pogs/${data.imageUrl.replace('.JPG', '.png')}`;
+            console.log('Fetched data:', data); // Debugging
+            var modal = document.getElementById("pogDetailsModal");
+            var modalContent = document.getElementById("pogDetailsContent");
+            var imageUrlWebp = `/pogs/${data.url}.webp`; // WebP image URL
+            var imageUrlPng = `/pogs/${data.url}.png`;   // PNG image URL
 
             modalContent.innerHTML = `
                 <div class="modal-text">
@@ -148,14 +149,29 @@ function handleSort() {
                     <p><strong>Creator:</strong> ${data.creator}</p>
                 </div>
                 <div class="modal-image">
-                    <img id="pogImage" class="resized-image" src="${imageUrl}" alt="${data.name}" onerror="this.onerror=null;this.src='${fallbackImageUrl}';" />
+                    <img id="pogImage" class="resized-image" src="${imageUrlWebp}" alt="${data.name}" />
                 </div>
             `;
+
+            // Add error handling for the image
+            var pogImage = document.getElementById("pogImage");
+            pogImage.onerror = function () {
+                console.log('Failed to load:', pogImage.src);
+                if (pogImage.src === imageUrlWebp) {
+                    console.warn('WebP failed, trying PNG:', imageUrlPng);
+                    pogImage.src = imageUrlPng;
+                } else {
+                    console.error('Both WebP and PNG failed, using fallback.');
+                    pogImage.src = '/path/to/fallback-image.webp';
+                }
+            };
+
             modal.style.display = "flex";
         })
-        .catch(error => console.error('Error fetching pog details:', error));
-
-} 
+        .catch(error => {
+            console.error('Error fetching pog details:', error);
+        });
+}
 function showTab(tabId) {
     var tabs = document.querySelectorAll('.tab');
     tabs.forEach(function (tab) {
@@ -163,7 +179,7 @@ function showTab(tabId) {
     });
     document.getElementById(tabId).classList.add('active');
 }
- function searchPogs() {
+function searchPogs() {
     var idInput = document.getElementById("searchIdInput").value;
     var nameInput = document.getElementById("searchNameInput").value;
     var serialInput = document.getElementById("searchSerialInput").value;
@@ -286,9 +302,11 @@ function showPogDetails(uid) {
             console.log('Fetched data:', data); // Log the entire data object for debugging
             var modal = document.getElementById("pogDetailsModal");
             var modalContent = document.getElementById("pogDetailsContent");
-            var imageUrl = `/pogs/${data.url}.JPG`; // Construct the image URL using the url from the database
+            var imageUrl3 = `/pogs/${data.url}.JPG`; // Construct the image URL using the url from the database
             var imageUrl2 = `/pogs/${data.url}.png`; // Construct the second image URL using the url from the database
+            var imageUrl = `/pogs/${data.url}.webp`; // Construct the third image URL using the url from the database
             console.log('Image URL:', imageUrl); // Log the image URL for debugging
+
             modalContent.innerHTML = `
                 <div class="modal-text">
                     <span class="close" onclick="closeModal()">&times;</span>
@@ -303,16 +321,23 @@ function showPogDetails(uid) {
                     <p><strong>Creator:</strong> ${data.creator}</p>
                 </div>
                 <div class="modal-image">
-                    <img id="pogImage" class="resized-image" src="${imageUrl}" alt="${data.name}" onerror="this.onerror=null;this.src='${imageUrl2}';" />
+                    <img id="pogImage" class="resized-image" src="${imageUrl}" alt="${data.name}" />
                 </div>
             `;
+
+            // Add error handling for the image
+            var pogImage = document.getElementById("pogImage");
+            pogImage.onerror = function () {
+                console.error('Image failed to load:', pogImage.src);
+                pogImage.src = '/path/to/fallback-image.webp'; // Fallback image
+            };
+
             modal.style.display = "flex";
         })
         .catch(error => {
             console.error('Error fetching pog details:', error);
         });
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     var themeSwitch = document.getElementById('themeSwitch');
 
@@ -324,32 +349,26 @@ document.addEventListener('DOMContentLoaded', function () {
     themeSwitch.addEventListener('change', function () {
         var isDarkMode = themeSwitch.checked;
 
-        // Show a confirmation dialog
-        var confirmChange = confirm("Changing the theme will reload the page, which means your search will revert back to default. Do you want to proceed?");
-        if (confirmChange) {
-            applyTheme(isDarkMode);
+        // Apply the theme immediately without confirmation
+        applyTheme(isDarkMode);
 
-            // Store the theme preference in local storage
-            localStorage.setItem('darkMode', isDarkMode);
+        // Store the theme preference in local storage
+        localStorage.setItem('darkMode', isDarkMode);
 
-            // Send the theme preference to the server
-            fetch('/setTheme', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ darkMode: isDarkMode })
-            }).then(() => {
-                // Clear the search inputs
-                clearSearchInputs();
+        // Send the theme preference to the server
+        fetch('/setTheme', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ darkMode: isDarkMode })
+        }).then(() => {
+            // Clear the search inputs
+            clearSearchInputs();
 
-                // Reload the page to apply the theme change
-                location.reload();
-            });
-        } else {
-            // Revert the switch to its previous state
-            themeSwitch.checked = !isDarkMode;
-        }
+            // Reload the page to apply the theme change
+            location.reload();
+        });
     });
 });
 
@@ -425,6 +444,7 @@ function adjustTable() {
     const thead = table.querySelector('thead');
     const tbody = table.querySelector('tbody');
 
+
     // Fetch pogs data from the server
     fetch('/api/pogs')
         .then(response => response.json())
@@ -456,7 +476,7 @@ function adjustTable() {
                                 <th>ID</th>
                                 <th>Serial</th>
                                 <th>Name</th>
-                                <th>Tags</th>
+                               
                             </tr>
                         `;
                 tbody.innerHTML = pogs.map(pog => `
@@ -464,7 +484,7 @@ function adjustTable() {
                                 <td data-label="ID">${pog.uid}</td>
                                 <td data-label="Serial">${pog.serial}</td>
                                 <td data-label="Name">${pog.name}</td>
-                                <td data-label="Tags">${pog.tags}</td>
+                              
                             </tr>
                         `).join('');
             }
@@ -510,16 +530,17 @@ function getBackgroundColor(rank) {
     };
 
     const darkRanks = {
-        'Uncommon': '#395013',
-        'Trash': '#660e0e',
-        'Common': '#ad6309',
-        'Rare': '#1d4a6e',
-        'Mythic': '#332974',
-        'Default': '#414141'
+        'Uncommon': '#3d442f',
+        'Trash': '#412020',
+        'Common': '#4b3317',
+        'Rare': '#2d3f4d',
+        'Mythic': '#34314b',
+        'Default': '#333333'
     };
 
     const isDarkMode = document.body.classList.contains('dark-mode');
     const ranks = isDarkMode ? darkRanks : lightRanks;
 
+    // Fallback if rank is undefined or invalid
     return ranks[rank] || ranks['Default'];
 }
