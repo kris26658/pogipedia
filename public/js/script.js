@@ -412,19 +412,6 @@ window.onload = function () {
     window.addEventListener('resize', adjustTable);
 };
 
-// Check if the user has been prompted for dark mode before
-if (!localStorage.getItem('darkModePrompted')) {
-    var isDarkMode = confirm("Would you like to enable dark mode?");
-    applyTheme(isDarkMode);
-
-    // Store the user's preference and that they have been prompted
-    localStorage.setItem('darkModePrompted', 'true');
-    localStorage.setItem('darkMode', isDarkMode);
-} else {
-    var isDarkMode = localStorage.getItem('darkMode') === 'true';
-    applyTheme(isDarkMode);
-}
-
 // Add the "loaded" class to the body to prevent FOUC
 document.body.classList.add('loaded');
 
