@@ -6,108 +6,56 @@ body {
     justify-content: center;
     min-height: 100vh;
     margin: 0;
-    font-size: 18px; /* Base font size */
+    font-size: 18px;
+    font-family: 'Courier New', monospace;
     visibility: hidden; /* Prevent FOUC */
-    font-family: 'Courier New', monospace; /* Set the universal font */
-    
+    color: #000;
+    background-color: #fff;
 }
+
+body.loaded {
+    visibility: visible; /* Make body visible after page load */
+}
+
+h2 {
+    font-size: 2.5em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #d3d3d3;
+    background-color: #b9b7b7;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 footer {
-    text-align: center; /* Center-align the content inside the footer */
+    text-align: center;
 }
-/* Back to Top Button Styles */
+
 footer .back-to-top {
-    margin: 10px auto; /* Add vertical margin and center horizontally */
+    margin: 10px auto;
     padding: 10px 20px;
-    background-color: #b1b1b1; /* Button background color */
-    color: #353434; /* Button text color */
+    background-color: #b1b1b1;
+    color: #353434;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    display: inline-block; /* Ensure the button respects the text alignment */
+    display: inline-block;
+    transition: background-color 0.3s;
 }
 
 footer .back-to-top:hover {
-    background-color:  #4d4b4b /* Darker blue on hover */
-}
-body.loaded {
-    visibility: visible; /* Make the body visible after the page is fully loaded */
+    background-color: #4d4b4b;
 }
 
-/* Resized image styles */
 .resized-image {
-    width: 300px; /* Set the desired width */
-    height: auto; /* Maintain the aspect ratio */
-    max-width: 100%; /* Ensure the image does not exceed the container's width */
+    width: 300px;
+    height: auto;
+    max-width: 100%; /* Maintain aspect ratio and prevent overflow */
 }
 
-/* Light mode styles */
-body.light-mode {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.light-mode .search-bar {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.light-mode #title h2 {
-    color: #333333;
-    background-color: #ffffff;
-}
-
-/* Dark mode styles */
-body.dark-mode #pogDetailsModal {
-    background-color: rgba(0, 0, 0, 0.8); /* Darker background overlay */
-}
-
-body.dark-mode #pogDetailsModal .modal-content {
-    background-color: #1e1e1e; /* Dark background for the modal */
-    color: #ffffff; /* Light text color for readability */
-    border: 1px solid #444; /* Subtle border for the modal */
-    
-}
-
-body.dark-mode #pogDetailsModal .modal-text h2 {
-    color: #ffffff; /* Ensure the title is visible in dark mode */
-}
-
-body.dark-mode #pogDetailsModal .modal-text p {
-    color: #cccccc; /* Slightly lighter text for better readability */
-}
-
-
-body.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-}
-
-body.dark-mode .search-bar {
-    background-color: #333333;
-    color: #ffffff;
-}
-
-body.dark-mode  .h2 {
-    color: #5f5c5c;
-    background-color: #333333;
-   
-}
-
-/* Title styles */
-h2 {
-    font-size: 2.5em; /* Title font size */
-    color: #333; /* Title color */
-    text-align: center; /* Center the title */
-    margin-bottom: 20px; /* Space below the title */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
-    border: 2px solid #d3d3d3; /* Border around the title */
-    background-color: #b9b7b7; /* Title background color */
-    padding: 10px; /* Padding inside the border */
-    border-radius: 10px; /* Rounded corners */
-}
-
-/* Tab styles */
 .tab {
     display: none;
 }
@@ -116,7 +64,6 @@ h2 {
     display: block;
 }
 
-/* Search bar styles */
 .search-bar {
     padding: 10px;
     border-radius: 5px;
@@ -127,101 +74,89 @@ h2 {
 .search-bar input,
 .search-bar button,
 .search-bar select {
-    font-size: 1.2em; /* Font size for inputs and buttons */
+    font-size: 1.2em;
 }
+
 #pogDetailsContent {
     display: flex;
-    flex-direction: row; /* Default: Arrange content in a row */
-    align-items: flex-start; /* Align items at the top */
-    gap: 20px; /* Add space between the image and text */
-    width: 90%; /* Use 90% of the screen width for responsiveness */
-    max-width: 600px; /* Set a maximum width */
-    height: auto; /* Allow height to adjust based on content */
-    max-height: 80vh; /* Use 80% of the viewport height */
-    overflow-y: auto; /* Add scrollbars if content overflows vertically */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    padding: 20px; /* Add padding for better spacing */
-    box-sizing: border-box; /* Include padding in width/height */
-    background-color: #fff; /* Ensure a clear background */
-    border-radius: 10px; /* Add rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for better visibility */
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    width: 90%;
+    max-width: 600px;
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-size: medium;
 }
 
-/* Ensure the image is on the side by default */
 #pogDetailsContent .modal-image {
-    flex: 0 0 auto; /* Allow the image to resize naturally */
-    max-width: 200px; /* Set a maximum width for the image */
-    height: auto; /* Maintain the aspect ratio */
-    margin-right: 20px; /* Add spacing between the image and text */
-    align-self: flex-end; /* Align the image to the bottom of the text */
+    flex: 0 0 auto;
+    max-width: 200px;
+    height: auto;
+    margin-right: 20px;
+    align-self: flex-end;
 }
 
-/* Ensure the text takes up the remaining space */
 #pogDetailsContent .modal-text {
-    flex: 1; /* Allow the text to take up the remaining space */
-    overflow-y: auto; /* Add scrollbars if the text overflows */
-    word-wrap: break-word; /* Ensure long words break properly */
-    line-height: 1.5; /* Improve readability of the text */
+    flex: 1;
+    overflow-y: auto;
+    word-wrap: break-word;
+    line-height: 1.5;
 }
 
-/* Adjust layout when the content's height is greater than its width */
 @media (max-aspect-ratio: 1/1) {
     #pogDetailsContent {
-        flex-direction: column; /* Stack content vertically */
-        align-items: center; /* Center align items */
+        flex-direction: column;
+        align-items: center;
         font-size: x-large;
-       
     }
+
     body {
-        font-size: 30px; /* Increase base font size for mobile */
+        font-size: 30px;
     }
 
     #pogDetailsContent .modal-image {
-        flex: 0 0 auto; /* Allow the image to resize naturally */
-        max-width: 250px; /* Increased maximum width for the image */
-        width: 100%; /* Ensure the image takes up the full width of its container */
-        height: auto; /* Maintain the aspect ratio */
-        margin-right: 20px; /* Add spacing between the image and text */
-        align-self: center; /* Center the image horizontally */
+        max-width: 250px;
+        width: 100%;
+        align-self: center;
+    }
 
-    }
     footer .back-to-top {
-        padding: 20px 40px; /* Increase padding for a larger button */
-        font-size: 22px; /* Increase font size for the button text */
+        padding: 20px 40px;
+        font-size: 22px;
     }
-    
 }
 
-/* Add media query for smaller screens */
-/* Add media query for smaller screens */
-/* Add media query for smaller screens */
 @media (max-width: 600px) {
     #pogDetailsContent {
-        flex-direction: column; /* Stack content vertically */
-        align-items: center; /* Center align items */
-        width: 95%; /* Use more of the screen width on smaller devices */
-        max-width: none; /* Remove the maximum width constraint */
-        max-height: 90vh; /* Use 90% of the viewport height */
-        padding: 15px; /* Reduce padding for smaller screens */
+        flex-direction: column;
+        align-items: center;
+        width: 95%;
+        max-width: none;
+        max-height: 90vh;
+        padding: 15px;
         font-size: xx-large;
     }
+
     #pogDetailsContent .modal-image {
-        width: 100%; /* Make the image take up the full width of the container */
-        max-width: 400px; /* Increased maximum width for smaller screens */
-        height: auto; /* Maintain the aspect ratio */
-        margin-right: 0; /* Remove right margin for vertical layout */
-        margin-left: 20px; /* Move the image more to the right */
-        margin-bottom: 15px; /* Add spacing below the image */
-        align-self: center; /* Center the image horizontally */
-        display: block; /* Ensure the image is treated as a block element */
+        width: 100%;
+        max-width: 400px;
+        margin: 0 20px 15px;
+        align-self: center;
+        display: block;
     }
 
     #pogDetailsContent .modal-text {
-        text-align: center; /* Center-align the text for better readability */
+        text-align: center;
     }
 }
-/* Modal styles */
+
 .modal {
     display: none;
     position: fixed;
@@ -234,8 +169,8 @@ h2 {
     background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align modal higher on the screen */
-    padding-top: 50px; /* Add some spacing from the top */
+    align-items: flex-start;
+    padding-top: 50px;
 }
 
 .modal-content {
@@ -248,27 +183,25 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 1.2em; /* Modal content font size */
+    font-size: 1.2em;
 }
 
-/* Close button styles */
 .close {
     color: #aaa;
     align-self: flex-end;
-    font-size: 2em; /* Close button font size */
+    font-size: 2em;
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.3s;
 }
 
 .close:hover,
 .close:focus {
     color: black;
-    text-decoration: none;
 }
 
-/* Table styles */
 table {
-    font-size: 1.2em; /* Table font size */
+    font-size: 1.2em;
     width: 100%;
     border-collapse: collapse;
 }
@@ -295,59 +228,6 @@ tbody tr:hover {
     cursor: pointer;
 }
 
-/* Color guide styles */
-
-.color-guide {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 100%; /* Allow full width */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.color-guide h3 {
-    margin-bottom: 15px;
-    font-size: 20px;
-    text-align: center;
-    font-weight: bold;
-    color: #333;
-}
-
-.color-guide .color-row {
-    display: flex; /* Use flexbox for horizontal alignment */
-    justify-content: center; /* Center items horizontally */
-    gap: 20px; /* Add space between items */
-    flex-wrap: wrap; /* Wrap items to the next line if needed */
-}
-
-.color-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-.color-guide.dark-mode h3 {
-    color: #bbbbbb; /* Lighter text color for better readability in dark mode */
-}
-.color-box {
-    width: 40px; /* Box size */
-    height: 40px;
-    margin-bottom: 8px;
-    border: 1px solid #000;
-    border-radius: 4px; /* Rounded corners */
-}
-
-.color-item span {
-    font-size: 14px;
-    color: #949494;
-}
-
-
-/* Switch styles */
 .switch {
     position: absolute;
     top: 20px;
@@ -371,7 +251,7 @@ tbody tr:hover {
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    transition: .4s;
+    transition: 0.4s;
     border-radius: 34px;
 }
 
@@ -383,7 +263,7 @@ tbody tr:hover {
     left: 4px;
     bottom: 4px;
     background-color: white;
-    transition: .4s;
+    transition: 0.4s;
     border-radius: 50%;
 }
 
@@ -395,33 +275,106 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-/* Dark mode-specific styles */
-.modal-content.dark-mode {
-    background-color: #333333;
-    color: #ffffff;
+.guide {
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
 }
 
-.color-guide.dark-mode {
+.guide h3 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#color-guide .box {
+    width: 40px;
+    margin-bottom: 8px;
+}
+
+#tag-guide .box {
+    width: 80px;
+}
+
+#color-guide .box,
+#tag-guide .box {
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 40px;
+    border: 1px solid #000;
+    border-radius: 4px;
+}
+
+.item span {
+    font-size: 14px;
+    color: #949494;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #fff;
+}
+
+body.dark-mode .search-bar,
+body.dark-mode h2 {
+    background-color: #333;
+    color: #7c7a7a;
+}
+
+body.dark-mode .modal-content {
+    background-color: #1e1e1e;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+.guide.dark-mode {
     background-color: rgba(50, 50, 50, 0.8);
-    border-color: #555555;
+    border-color: #555;
 }
 
-.color-guide.dark-mode .color-box {
-    border: 1px solid #ffffff;
+.guide.dark-mode h3 {
+    color: #bbb;
+}
+
+#color-guide.guide.dark-mode .box,
+#tag-guide.guide.dark-mode .box {
+    border: 1px solid #fff;
 }
 
 /* Light mode colors */
-.color-guide.light-mode .color-box.trash { background-color: #fcdcdc; }
-.color-guide.light-mode .color-box.common { background-color: #ffedc1; }
-.color-guide.light-mode .color-box.uncommon { background-color: #EBF8DC; }
-.color-guide.light-mode .color-box.rare { background-color: #DCF2F8; }
-.color-guide.light-mode .color-box.mythic { background-color: #E7D5F3; }
-.color-guide.light-mode .color-box.unknown { background-color: #FFFFFF; }
+.guide.light-mode .box#trash { background-color: #fcdcdc; }
+.guide.light-mode .box#common { background-color: #ffedc1; }
+.guide.light-mode .box#uncommon { background-color: #ebf8dc; }
+.guide.light-mode .box#rare { background-color: #dcf2f8; }
+.guide.light-mode .box#mythic { background-color: #e7d5f3; }
+.guide.light-mode .box#unknown { background-color: #fff; }
 
 /* Dark mode colors */
-.color-guide.dark-mode .color-box.trash { background-color: #412020; }
-.color-guide.dark-mode .color-box.common { background-color: #4b3317; }
-.color-guide.dark-mode .color-box.uncommon { background-color: #3d442f; }
-.color-guide.dark-mode .color-box.rare { background-color: #2d3f4d; }
-.color-guide.dark-mode .color-box.mythic { background-color: #34314b; }
-.color-guide.dark-mode .color-box.unknown { background-color:  #333333; }
+.guide.dark-mode .box#trash { background-color: #412020; }
+.guide.dark-mode .box#common { background-color: #4b3317; }
+.guide.dark-mode .box#uncommon { background-color: #3d442f; }
+.guide.dark-mode .box#rare { background-color: #2d3f4d; }
+.guide.dark-mode .box#mythic { background-color: #0e0b22; }
+.guide.dark-mode .box#unknown { background-color: #333; }

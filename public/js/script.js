@@ -383,18 +383,24 @@ function applyTheme(isDarkMode) {
     if (isDarkMode) {
         document.body.classList.add('dark-mode');
         document.querySelector('.modal-content').classList.add('dark-mode');
-        document.querySelector('.color-guide').classList.add('dark-mode');
+        document.querySelector('#color-guide').classList.add('dark-mode');
+        document.querySelector('#tag-guide').classList.add('dark-mode');
     } else {
         document.body.classList.remove('dark-mode');
         document.querySelector('.modal-content').classList.remove('dark-mode');
-        document.querySelector('.color-guide').classList.remove('dark-mode');
+        document.querySelector('#color-guide').classList.remove('dark-mode');
+        document.querySelector('#tag-guide').classList.remove('dark-mode');
     }
 }
 
+// Function to close the modal
 function closeModal() {
     var modal = document.getElementById("pogDetailsModal");
-    modal.style.display = "none";
+    if (modal) {
+        modal.style.display = "none";
+    }
 }
+
 window.onload = function () {
     // Ensure the modal is hidden when the page loads
     var modal = document.getElementById("pogDetailsModal");
@@ -490,26 +496,6 @@ function adjustTable() {
             }
         })
         .catch(error => console.error('Error fetching pogs:', error));
-}
-// Function to apply the theme
-function applyTheme(isDarkMode) {
-    if (isDarkMode) {
-        document.body.classList.add('dark-mode');
-        document.querySelector('.modal-content').classList.add('dark-mode');
-        document.querySelector('.color-guide').classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-        document.querySelector('.modal-content').classList.remove('dark-mode');
-        document.querySelector('.color-guide').classList.remove('dark-mode');
-    }
-}
-
-// Function to close the modal
-function closeModal() {
-    var modal = document.getElementById("pogDetailsModal");
-    if (modal) {
-        modal.style.display = "none";
-    }
 }
 
 // Event listener for clicking outside the modal
