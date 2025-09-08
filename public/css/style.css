@@ -411,17 +411,17 @@ input:checked + .slider:before {
 }
 
 /* Light mode colors */
-.color-guide.light-mode .color-box.trash { background-color: #fcdcdc; }
-.color-guide.light-mode .color-box.common { background-color: #ffedc1; }
-.color-guide.light-mode .color-box.uncommon { background-color: #EBF8DC; }
-.color-guide.light-mode .color-box.rare { background-color: #DCF2F8; }
-.color-guide.light-mode .color-box.mythic { background-color: #E7D5F3; }
-.color-guide.light-mode .color-box.unknown { background-color: #FFFFFF; }
+.guide.light-mode .box#trashBox { background-color: #fcdcdc; }
+.guide.light-mode .box#commonBox { background-color: #ffedc1; }
+.guide.light-mode .box#uncommonBox { background-color: #ebf8dc; }
+.guide.light-mode .box#rareBox { background-color: #dcf2f8; }
+.guide.light-mode .box#mythicBox { background-color: #e7d5f3; }
+.guide.light-mode .box#unknownBox { background-color: #fff; }
 
 /* Dark mode colors */
-.color-guide.dark-mode .color-box.trash { background-color: #412020; }
-.color-guide.dark-mode .color-box.common { background-color: #4b3317; }
-.color-guide.dark-mode .color-box.uncommon { background-color: #3d442f; }
-.color-guide.dark-mode .color-box.rare { background-color: #2d3f4d; }
-.color-guide.dark-mode .color-box.mythic { background-color: #34314b; }
-.color-guide.dark-mode .color-box.unknown { background-color:  #333333; }
+.guide.dark-mode .box#trashBox { background-color: #412020; }
+.guide.dark-mode .box#commonBox { background-color: #4b3317; }
+.guide.dark-mode .box#uncommonBox { background-color: #3d442f; }
+.guide.dark-mode .box#rareBox { background-color: #2d3f4d; }
+.guide.dark-mode .box#mythicBox { background-color: #0e0b22; }
+.guide.dark-mode .box#unknownBox { background-color: #333; }
