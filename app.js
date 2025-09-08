@@ -28,7 +28,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
 let darkMode = false;
 if (process.env.DARK_MODE === 'true') {
   darkMode = true;
-  console.log('Dark mode is enabled.');
 }
 
 // Define color schemes for light and dark modes
@@ -152,7 +151,6 @@ app.get('/api/pogs', (req, res) => {
     if (err) {
       return res.status(500).send(err.message);
     }
-    console.log('Fetched pogs:', rows); // Log the fetched data
     res.json(rows);
   });
 });
@@ -163,7 +161,6 @@ app.get('/api/pogs/:uid', (req, res) => {
     if (err) {
         res.status(500).json({ error: err.message });
     } else {
-        console.log('Fetched row:', row); // Debugging
         res.json(row);
     }
 });
@@ -175,17 +172,13 @@ app.get('/api/pogs/:identifier', (req, res) => {
   let sql;
   let params;
 
-  console.log(`Received identifier: ${identifier}`);
-
   // Check if the identifier is a number (uid) or matches a serial number pattern
   if (!isNaN(identifier)) {
     sql = 'SELECT uid, serial, name, color, tags, lore, rank, creator FROM pogs WHERE uid = ?';
     params = [identifier];
-    console.log('Identifier is a number, treating as uid');
   } else if (/^\d{4}[A-Z]{1}\d{2}$/.test(identifier)) { // Adjust the regex pattern to match your serial number format
     sql = 'SELECT uid, serial, name, color, tags FROM pogs WHERE serial = ?';
     params = [identifier];
-    console.log('Identifier matches serial number pattern, treating as serial');
   } else {
     return res.status(400).send('Invalid identifier format');
   }
