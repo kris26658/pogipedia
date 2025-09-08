@@ -5,6 +5,124 @@ function showTab(tabId) {
     });
     document.getElementById(tabId).classList.add('active');
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    // event listeners for each color guide box
+    document.getElementById("trashBox").addEventListener("click", function () {
+        console.log("Trash box clicked");
+        sortByTag("Trash");
+    });
+
+    document.getElementById("commonBox").addEventListener("click", function () {
+        console.log("Common box clicked");
+        sortByTag("Common");
+    });
+
+    document.getElementById("uncommonBox").addEventListener("click", function () {
+        console.log("Uncommon box clicked");
+        sortByTag("Uncommon");
+    });
+
+    document.getElementById("rareBox").addEventListener("click", function () {
+        console.log("Rare box clicked");
+        sortByTag("Rare");
+    });
+
+    document.getElementById("mythicBox").addEventListener("click", function () {
+        console.log("Mythic box clicked");
+        sortByTag("Mythic");
+    });
+    document.getElementById("unknownBox").addEventListener("click", function () {
+        console.log("Unknown box clicked");
+        sortByTag("Unknown");
+    });
+
+    // event listeners for each tag guide box
+    document.getElementById("classPogBox").addEventListener("click", function () {
+        //console.log("Class Pog box clicked");
+        sortByTag("Class Pog");
+    });
+
+    document.getElementById("pokepogBox").addEventListener("click", function () {
+        //console.log("PokePogs box clicked");
+        sortByTag("PokePogs");
+    });
+
+    document.getElementById("teacherCreatedBox").addEventListener("click", function () {
+        //console.log("Teacher Created box clicked");
+        sortByTag("Teacher Created");
+    });
+
+    document.getElementById("studentCreatedBox").addEventListener("click", function () {
+        //console.log("Student Created box clicked");
+        sortByTag("Student Created");
+    });
+});
+
+function sortByTag(tag) {
+    fetch('/searchPogs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            tags: tag   // Search by the specific tag
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            var table = document.getElementById("allPogsTable").getElementsByTagName('tbody')[0];
+            table.innerHTML = ''; // Clear the table before adding new rows
+            data.forEach(function (pog) {
+                var row = table.insertRow();
+                row.style.Rank = pog.Rank;
+                row.insertCell(0).innerText = pog.uid;
+                row.insertCell(1).innerText = pog.serial;
+                row.insertCell(2).innerText = pog.name;
+                row.insertCell(3).innerText = pog.color;
+                row.insertCell(4).innerText = pog.tags;
+                row.addEventListener('click', function () {
+                    showPogDetails(pog.uid);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching pogs:', error);
+        });
+}
+
+function sortByRank(rank) {
+    fetch('/searchPogs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ranks: rank   // Search by the specific tag
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            var table = document.getElementById("allPogsTable").getElementsByTagName('tbody')[0];
+            table.innerHTML = ''; // Clear the table before adding new rows
+            data.forEach(function (pog) {
+                var row = table.insertRow();
+                row.style.rank = pog.rank;
+                row.insertCell(0).innerText = pog.uid;
+                row.insertCell(1).innerText = pog.serial;
+                row.insertCell(2).innerText = pog.name;
+                row.insertCell(3).innerText = pog.color;
+                row.insertCell(4).innerText = pog.tags;
+                row.addEventListener('click', function () {
+                    showPogDetails(pog.uid);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching pogs:', error);
+        });
+}
+
 function searchPogs() {
     var idInput = document.getElementById("searchIdInput").value;
     var nameInput = document.getElementById("searchNameInput").value;
@@ -28,7 +146,7 @@ function searchPogs() {
             table.innerHTML = '';
             data.forEach(function (pog) {
                 var row = table.insertRow();
-                row.style.backgroundColor = pog.backgroundColor;
+                row.style.rank = pog.rank;
                 row.insertCell(0).innerText = pog.uid;
                 row.insertCell(1).innerText = pog.serial;
                 row.insertCell(2).innerText = pog.name;
@@ -195,7 +313,7 @@ function searchPogs() {
             table.innerHTML = ''; // Clear the table before adding new rows
             data.forEach(function (pog) {
                 var row = table.insertRow();
-                row.style.backgroundColor = pog.backgroundColor; // Set the background color based on rank
+                row.style.rank = pog.rank; // Set the background color based on rank
                 row.insertCell(0).innerText = pog.uid;
                 row.insertCell(1).innerText = pog.serial;
                 row.insertCell(2).innerText = pog.name;
@@ -372,18 +490,24 @@ function applyTheme(isDarkMode) {
     if (isDarkMode) {
         document.body.classList.add('dark-mode');
         document.querySelector('.modal-content').classList.add('dark-mode');
-        document.querySelector('.color-guide').classList.add('dark-mode');
+        document.querySelector('#color-guide').classList.add('dark-mode');
+        document.querySelector('#tag-guide').classList.add('dark-mode');
     } else {
         document.body.classList.remove('dark-mode');
         document.querySelector('.modal-content').classList.remove('dark-mode');
-        document.querySelector('.color-guide').classList.remove('dark-mode');
+        document.querySelector('#color-guide').classList.remove('dark-mode');
+        document.querySelector('#tag-guide').classList.remove('dark-mode');
     }
 }
 
+// Function to close the modal
 function closeModal() {
     var modal = document.getElementById("pogDetailsModal");
-    modal.style.display = "none";
+    if (modal) {
+        modal.style.display = "none";
+    }
 }
+
 window.onload = function () {
     // Ensure the modal is hidden when the page loads
     var modal = document.getElementById("pogDetailsModal");
@@ -438,7 +562,7 @@ function adjustTable() {
                             </tr>
                         `;
                 tbody.innerHTML = pogs.map(pog => `
-                            <tr class="list-color-change" style="background-color: ${getBackgroundColor(pog.rank)};" onclick="showPogDetails(${pog.uid})">
+                            <tr class="list-color-change" style="background-color: ${getRank(pog.rank)};" onclick="showPogDetails(${pog.uid})">
                                 <td data-label="ID">${pog.uid}</td>
                                 <td data-label="Serial">${pog.serial}</td>
                                 <td data-label="Name">${pog.name}</td>
@@ -456,7 +580,7 @@ function adjustTable() {
                             </tr>
                         `;
                 tbody.innerHTML = pogs.map(pog => `
-                            <tr class="list-color-change" style="background-color: ${getBackgroundColor(pog.rank)};" onclick="showPogDetails(${pog.uid})">
+                            <tr class="list-color-change" style="background-color: ${getRank(pog.rank)};" onclick="showPogDetails(${pog.uid})">
                                 <td data-label="ID">${pog.uid}</td>
                                 <td data-label="Serial">${pog.serial}</td>
                                 <td data-label="Name">${pog.name}</td>
@@ -467,26 +591,6 @@ function adjustTable() {
         })
         .catch(error => console.error('Error fetching pogs:', error));
 }
-// Function to apply the theme
-function applyTheme(isDarkMode) {
-    if (isDarkMode) {
-        document.body.classList.add('dark-mode');
-        document.querySelector('.modal-content').classList.add('dark-mode');
-        document.querySelector('.color-guide').classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-        document.querySelector('.modal-content').classList.remove('dark-mode');
-        document.querySelector('.color-guide').classList.remove('dark-mode');
-    }
-}
-
-// Function to close the modal
-function closeModal() {
-    var modal = document.getElementById("pogDetailsModal");
-    if (modal) {
-        modal.style.display = "none";
-    }
-}
 
 // Event listener for clicking outside the modal
 window.onclick = function (event) {
@@ -495,13 +599,14 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 };
-function getBackgroundColor(rank) {
+function getRank(rank) {
     const lightRanks = {
         'Uncommon': '#EBF8DC',
         'Trash': '#fcdcdc',
         'Common': '#ffedc1',
         'Rare': '#DCF2F8',
         'Mythic': '#E7D5F3',
+        'Unknown': '#E0E0E0',
         'Default': '#FFFFFF'
     };
 
@@ -511,6 +616,7 @@ function getBackgroundColor(rank) {
         'Common': '#4b3317',
         'Rare': '#2d3f4d',
         'Mythic': '#34314b',
+        'Unknown': '#4b4b4b',
         'Default': '#333333'
     };
 

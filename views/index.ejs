@@ -1,61 +1,88 @@
 <!DOCTYPE html>
 <html>
-    
-    <head>
-        
-        <title>Index Page</title>
-        <link rel="stylesheet" type="text/css" href="/css/style.css">
-        <script src="/js/script.js" defer>
 
-        </script>
-    </head>
-    
-    <body>
-        <script>function scrollToTop() {
+<head>
+
+    <title>Index Page</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="/js/script.js" defer>
+
+    </script>
+</head>
+
+<body>
+    <script>function scrollToTop() {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth' // Smooth scrolling effect
             });
         }</script>
-        <label class="switch">
-            <input type="checkbox" id="themeSwitch">
-            <span class="slider round"></span>
-        </label>
-        <div id="allPogsTab" class="tab active">
-            <div id="title">
-                <h2>Pogipedia</h2>
+    <label class="switch">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider round"></span>
+    </label>
+    <div id="allPogsTab" class="tab active">
+        <div id="title">
+            <h2>Pogipedia</h2>
+        </div>
+
+        <!-- Color Guide -->
+
+        <div id="color-guide" class="guide light-mode">
+            <h3>Color Guide</h3>
+            <div class="row">
+                <div class="item">
+                    <div id="trashBox" class="box"></div>
+                    <span>Trash</span>
+                </div>
+                <div class="item">
+                    <div id="commonBox" class="box"></div>
+                    <span>Common</span>
+                </div>
+                <div class="item">
+                    <div id="uncommonBox" class="box"></div>
+                    <span>Uncommon</span>
+                </div>
+                <div class="item">
+                    <div id="rareBox" class="box"></div>
+                    <span>Rare</span>
+                </div>
+                <div class="item">
+                    <div id="mythicBox" class="box"></div>
+                    <span>Mythic</span>
+                </div>
+                <div class="item">
+                    <div id="unknownBox" class="box"></div>
+                    <span>Unknown</span>
+                </div>
             </div>
-            
-            <!-- Color Guide -->
-            <div class="color-guide light-mode">
-                <h3>Color Guide</h3>
-                <div class="color-row">
-                    <div class="color-item">
-                        <div class="color-box trash"></div>
-                        <span>Trash</span>
+        </div>
+
+        <div id="tag-guide" class="guide light-mode">
+            <h3>Tag Guide</h3>
+            <div class="row">
+                <div class="item">
+                    <div class="box" id="classPogBox" title="Pogs made to represent the class of a certain year.">
+                        <span>Class Pog</span>
                     </div>
-                    <div class="color-item">
-                        <div class="color-box common"></div>
-                        <span>Common</span>
+                </div>
+                <div class="item">
+                    <div class="box" id="pokepogBox" title="Pogs made for the PokePogs game. Includes both pogs and slammers.">
+                        <span>PokePogs</span>
                     </div>
-                    <div class="color-item">
-                        <div class="color-box uncommon"></div>
-                        <span>Uncommon</span>
+                </div>
+                <div class="item">
+                    <div class="box" id="teacherCreatedBox" title="Pogs designed and made by Mr. Smith, typically for fun or for a special gimmick.">
+                        <span>Teacher Created</span>
                     </div>
-                    <div class="color-item">
-                        <div class="color-box rare"></div>
-                        <span>Rare</span>
-                    </div>
-                    <div class="color-item">
-                        <div class="color-box mythic"></div>
-                        <span>Mythic</span>
-                    </div>
-                    <div class="color-item">
-                        <div class="color-box unknown"></div>
-                        <span>Unknown</span>
+                </div>
+                <div class="item">
+                    <div class="box" id="studentCreatedBox" title="Pogs designed by students. Students can pay Mr. Smith pogs to print out new pogs they design.">
+                        <span>Student Created</span>
                     </div>
                 </div>
             </div>
+        </div>
         <div class="search-bar">
             <input type="text" id="searchIdInput" placeholder="Search by ID">
             <input type="text" id="searchNameInput" placeholder="Search by Name">
@@ -74,10 +101,10 @@
         </div>
         <table id="allPogsTable" border="1" style="margin: 0 auto;">
             <thead>
-               
+
             </thead>
             <tbody>
-              
+
             </tbody>
         </table>
     </div>
@@ -91,9 +118,10 @@
     </div>
 </body>
 <footer>
-   
+
     <button onclick="scrollToTop()" class="back-to-top">Back to Top</button>
 </footer>
+
 </html>
 
 </body>
