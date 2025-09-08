@@ -24,7 +24,6 @@ function searchPogs() {
         })
     })
         .then(data => {
-            console.log('Fetched pogs:', data); // Debugging: Log the fetched data
             var table = document.getElementById("allPogsTable").getElementsByTagName('tbody')[0];
             table.innerHTML = '';
             data.forEach(function (pog) {
@@ -42,13 +41,7 @@ function searchPogs() {
         })
 
 }
-// Log the initial screen size
-console.log(`Screen size: ${window.innerWidth}x${window.innerHeight}`);
 
-// Add an event listener to log the screen size on window resize
-window.addEventListener('resize', () => {
-    console.log(`Screen size: ${window.innerWidth}x${window.innerHeight}`);
-});
 function sortTable(n, isNumeric = false, dir = "asc") {
     var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
     table = document.getElementById("allPogsTable");
@@ -129,7 +122,6 @@ function handleSort() {
     fetch(`/api/pogs/${uid}`)
         .then(response => response.json())
         .then(data => {
-            console.log('Fetched data:', data); // Debugging
             var modal = document.getElementById("pogDetailsModal");
             var modalContent = document.getElementById("pogDetailsContent");
             var imageUrlWebp = `/pogs/${data.url}.webp`; // WebP image URL
@@ -299,13 +291,11 @@ function showPogDetails(uid) {
     fetch(`/api/pogs/${uid}`)
         .then(response => response.json())
         .then(data => {
-            console.log('Fetched data:', data); // Log the entire data object for debugging
             var modal = document.getElementById("pogDetailsModal");
             var modalContent = document.getElementById("pogDetailsContent");
             var imageUrl3 = `/pogs/${data.url}.JPG`; // Construct the image URL using the url from the database
             var imageUrl2 = `/pogs/${data.url}.png`; // Construct the second image URL using the url from the database
             var imageUrl = `/pogs/${data.url}.webp`; // Construct the third image URL using the url from the database
-            console.log('Image URL:', imageUrl); // Log the image URL for debugging
 
             modalContent.innerHTML = `
                 <div class="modal-text">
@@ -329,7 +319,6 @@ function showPogDetails(uid) {
             var pogImage = document.getElementById("pogImage");
             pogImage.onerror = function () {
                 console.error('Image failed to load:', pogImage.src);
-                pogImage.src = '/path/to/fallback-image.webp'; // Fallback image
             };
 
             modal.style.display = "flex";
@@ -411,19 +400,6 @@ window.onload = function () {
     // Add an event listener to adjust the table on window resize
     window.addEventListener('resize', adjustTable);
 };
-
-// Check if the user has been prompted for dark mode before
-if (!localStorage.getItem('darkModePrompted')) {
-    var isDarkMode = confirm("Would you like to enable dark mode?");
-    applyTheme(isDarkMode);
-
-    // Store the user's preference and that they have been prompted
-    localStorage.setItem('darkModePrompted', 'true');
-    localStorage.setItem('darkMode', isDarkMode);
-} else {
-    var isDarkMode = localStorage.getItem('darkMode') === 'true';
-    applyTheme(isDarkMode);
-}
 
 // Add the "loaded" class to the body to prevent FOUC
 document.body.classList.add('loaded');
