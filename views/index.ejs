@@ -17,12 +17,14 @@
                 behavior: 'smooth' // Smooth scrolling effect
             });
         }</script>
+        <div class="top-left">
+            <button id="login" onclick="window.location.href='/login'">Login</button>
+            <h3 id="user">User: <%- user %></h3>
+        </div>
         <label class="switch">
             <input type="checkbox" id="themeSwitch">
             <span class="slider round"></span>
         </label>
-        <button id="login" onclick="window.location.href='/login'">login</button>
-        <h1>user: <%- user%></h1>
         <div id="allPogsTab" class="tab active">
             <div id="title">
                 <h2>Pogipedia</h2>

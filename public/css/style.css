@@ -116,6 +116,44 @@ h2 {
     display: block;
 }
 
+/* Position login button and user div in the top-left corner */
+.top-left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: flex-start; /* Align items to the left */
+    gap: 5px; /* Add a small gap between the button and the user div */
+    background-color: rgba(255, 255, 255, 0.8); /* Add a subtle background for better visibility */
+    padding: 10px; /* Add padding for spacing */
+    border-radius: 8px; /* Round the corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+/* Style for the login button */
+#login {
+    font-size: 14px; /* Adjust the font size */
+    padding: 6px 12px; /* Adjust padding for a compact look */
+    background-color: #535353; /* Green background for the button */
+    color: white; /* White text color */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+#login:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+}
+
+/* Style for the user div */
+#user {
+    font-size: 14px; /* Adjust the font size */
+    color: #333; /* Dark text color */
+    font-weight: bold; /* Make the text bold */
+}
+
 /* Search bar styles */
 .search-bar {
     padding: 10px;
