@@ -364,17 +364,17 @@ body.dark-mode .modal-content {
 }
 
 /* Light mode colors */
-.guide.light-mode .box#trash { background-color: #fcdcdc; }
-.guide.light-mode .box#common { background-color: #ffedc1; }
-.guide.light-mode .box#uncommon { background-color: #ebf8dc; }
-.guide.light-mode .box#rare { background-color: #dcf2f8; }
-.guide.light-mode .box#mythic { background-color: #e7d5f3; }
-.guide.light-mode .box#unknown { background-color: #fff; }
+.guide.light-mode .box#trashBox { background-color: #fcdcdc; }
+.guide.light-mode .box#commonBox { background-color: #ffedc1; }
+.guide.light-mode .box#uncommonBox { background-color: #ebf8dc; }
+.guide.light-mode .box#rareBox { background-color: #dcf2f8; }
+.guide.light-mode .box#mythicBox { background-color: #e7d5f3; }
+.guide.light-mode .box#unknownBox { background-color: #fff; }
 
 /* Dark mode colors */
-.guide.dark-mode .box#trash { background-color: #412020; }
-.guide.dark-mode .box#common { background-color: #4b3317; }
-.guide.dark-mode .box#uncommon { background-color: #3d442f; }
-.guide.dark-mode .box#rare { background-color: #2d3f4d; }
-.guide.dark-mode .box#mythic { background-color: #0e0b22; }
-.guide.dark-mode .box#unknown { background-color: #333; }
+.guide.dark-mode .box#trashBox { background-color: #412020; }
+.guide.dark-mode .box#commonBox { background-color: #4b3317; }
+.guide.dark-mode .box#uncommonBox { background-color: #3d442f; }
+.guide.dark-mode .box#rareBox { background-color: #2d3f4d; }
+.guide.dark-mode .box#mythicBox { background-color: #0e0b22; }
+.guide.dark-mode .box#unknownBox { background-color: #333; }
