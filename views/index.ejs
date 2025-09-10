@@ -3,7 +3,7 @@
     
     <head>
         
-        <title>Index Page</title>
+        <title>Pogipedia</title>
         <link rel="stylesheet" type="text/css" href="/css/style.css">
         <script src="/js/script.js" defer>
 
@@ -17,6 +17,10 @@
                 behavior: 'smooth' // Smooth scrolling effect
             });
         }</script>
+        <div class="top-left">
+            <button id="login" onclick="window.location.href='/login'">Login</button>
+            <h3 id="user">User: <%- user %></h3>
+        </div>
         <label class="switch">
             <input type="checkbox" id="themeSwitch">
             <span class="slider round"></span>
