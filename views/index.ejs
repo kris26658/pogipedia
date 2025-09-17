@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-
-    <title>Index Page</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <script src="/js/script.js" defer>
+    
+    <head>
+        
+        <title>Pogipedia</title>
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+        <script src="/js/script.js" defer>
 
     </script>
 </head>
@@ -17,53 +17,34 @@
                 behavior: 'smooth' // Smooth scrolling effect
             });
         }</script>
-    <label class="switch">
-        <input type="checkbox" id="themeSwitch">
-        <span class="slider round"></span>
-    </label>
-    <div id="allPogsTab" class="tab active">
-        <div id="title">
-            <h2>Pogipedia</h2>
+        <div class="top-left">
+            <button id="login" onclick="window.location.href='/login'">Login</button>
+            <h3 id="user">User: <%- user %></h3>
         </div>
-
-        <!-- Color Guide -->
-
-        <div id="color-guide" class="guide light-mode">
-            <h3>Color Guide</h3>
-            <div class="row">
-                <div class="item">
-                    <div id="trashBox" class="box"></div>
-                    <span>Trash</span>
-                </div>
-                <div class="item">
-                    <div id="commonBox" class="box"></div>
-                    <span>Common</span>
-                </div>
-                <div class="item">
-                    <div id="uncommonBox" class="box"></div>
-                    <span>Uncommon</span>
-                </div>
-                <div class="item">
-                    <div id="rareBox" class="box"></div>
-                    <span>Rare</span>
-                </div>
-                <div class="item">
-                    <div id="mythicBox" class="box"></div>
-                    <span>Mythic</span>
-                </div>
-                <div class="item">
-                    <div id="unknownBox" class="box"></div>
-                    <span>Unknown</span>
-                </div>
+        <label class="switch">
+            <input type="checkbox" id="themeSwitch">
+            <span class="slider round"></span>
+        </label>
+        <div id="allPogsTab" class="tab active">
+            <div id="title">
+                <h2>Pogipedia</h2>
             </div>
-        </div>
-
-        <div id="tag-guide" class="guide light-mode">
-            <h3>Tag Guide</h3>
-            <div class="row">
-                <div class="item">
-                    <div class="box" id="classPogBox" title="Pogs made to represent the class of a certain year.">
-                        <span>Class Pog</span>
+            
+            <!-- Color Guide -->
+            <div class="color-guide light-mode">
+                <h3>Color Guide</h3>
+                <div class="color-row">
+                    <div class="color-item">
+                        <div class="color-box trash"></div>
+                        <span>Trash</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box common"></div>
+                        <span>Common</span>
+                    </div>
+                    <div class="color-item">
+                        <div class="color-box uncommon"></div>
+                        <span>Uncommon</span>
                     </div>
                 </div>
                 <div class="item">

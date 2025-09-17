@@ -2,6 +2,10 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const session = require('express-session');
+const AUTH_URL = 'http://localhost:420/oauth';
+const THIS_URL = 'http://172.16.3.209:3000/login';
 const app = express();
 const port = 3000;
 
@@ -12,6 +16,11 @@ app.set('views', path.join(__dirname, 'views'));
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'mYl!ttL3Gn!',
+  resave: false,
+  saveUninitialized: false,
+}));
 
 // Connect to SQLite database
 const dbPath = path.resolve(__dirname, 'db', 'pog.db');
@@ -82,7 +91,36 @@ function initializeDatabase() {
         FOREIGN KEY (pog_id) REFERENCES pogs (uid)
       )
     `);
+
+    // Create the 'users' table if it doesn't exist
+    db.run(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        fb_name TEXT NOT NULL,
+        fb_id TEXT UNIQUE NOT NULL
+      )
+    `);
   });
+}
+
+function isAuthenticated(req, res, next) {
+  if (req.session.user) {
+      const tokenData = req.session.token;
+
+      try {
+          // Check if the token has expired
+          const currentTime = Math.floor(Date.now() / 1000);
+          if (tokenData.exp < currentTime) {
+              throw new Error('Token has expired');
+          }
+
+          next();
+      } catch (err) {
+          res.redirect(`${FBJS_URL}/oauth?refreshToken=${tokenData.refreshToken}&redirectURL=${THIS_URL}`);
+      }
+  } else {
+      res.redirect(`/login?redirectURL=${THIS_URL}`);
+  }
 }
 
 // Route to render the index page
@@ -95,6 +133,7 @@ app.get('/', (req, res) => {
 
     // Render the index page with the fetched pogs and pass necessary data to the template
     res.render('index', {
+      user: req.session.user,
       pogs: pogs,
       getBackgroundColor: getBackgroundColor, // Pass the function to the template
       ranks: darkMode ? darkRanks : lightRanks // Pass the ranks object to the template
@@ -212,6 +251,45 @@ app.get('/api/collections/:name', (req, res) => {
     }
     res.json(rows);
   });
+});
+
+// Route to log users in through Formbar Oauth
+app.get('/login', (req, res) => {
+  if (req.query.token) {
+    let tokenData = jwt.decode(req.query.token);
+    req.session.token = tokenData;
+    req.session.user = tokenData.username;
+
+    let fb_id = req.session.token.id;
+    let fb_name = req.session.user;
+    let query = `SELECT * FROM users WHERE fb_id = ?`;
+
+    db.get(query, [fb_id], (err, row) => {
+        if (err) {
+            console.log(err);
+            console.error(err);
+            res.send("There was an error:\n" + err)
+        } else if (row) {
+            req.session.user = fb_name; // Ensure session is set
+            console.log("User found in users, redirecting to catologue");
+            res.redirect('/');
+        } else {
+            db.run(`INSERT INTO users(fb_name, fb_id) VALUES(?, ?)`, [fb_name, fb_id], (err) => {
+                if (err) {
+                    console.log(err);
+                    console.error(err);
+                    res.send("There was an error:\n" + err)
+                } else {
+                    req.session.user = fb_name; // Ensure session is set
+                    console.log("User inserted into users, redirecting to catalogue");
+                    res.redirect('/');
+                }
+            });
+        }
+    });
+} else {
+    res.redirect(`${AUTH_URL}?redirectURL=${THIS_URL}`);
+}
 });
 
 // Start the server
